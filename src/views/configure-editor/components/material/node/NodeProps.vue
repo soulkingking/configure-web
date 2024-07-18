@@ -34,14 +34,44 @@
                 </t-upload>
               </t-form-item>
             </t-collapse-panel>
-          </t-collapse>
-        </div>
-
-        <div class="p0">
-          <t-collapse :default-value="[0]">
             <t-collapse-panel header="样式">
               <t-form-item label="线宽度" name="lineWidth">
-                <t-input-number v-model="material.lineWidth" @change="changeValue('lineWidth')" />
+                <t-input-number
+                  v-model="material.lineWidth"
+                  :min="0"
+                  @change="changeValue('lineWidth')"
+                />
+              </t-form-item>
+              <t-form-item label="线颜色">
+                <t-color-picker
+                  v-model="material.color"
+                  :show-primary-color-preview="false"
+                  :input-props="{ autoWidth: false }"
+                  class="w-full"
+                  :enableAlpha="true"
+                  :colorModes="['monochrome']"
+                  format="RGBA"
+                  @change="changeValue('color')"
+                />
+              </t-form-item>
+              <t-form-item label="圆角" name="borderRadius">
+                <t-input-number
+                  :min="0"
+                  v-model="material.borderRadius"
+                  @change="changeValue('borderRadius')"
+                />
+              </t-form-item>
+              <t-form-item label="背景颜色">
+                <t-color-picker
+                  v-model="material.background"
+                  :show-primary-color-preview="false"
+                  :input-props="{ autoWidth: false }"
+                  class="w-full"
+                  :enableAlpha="true"
+                  :colorModes="['monochrome']"
+                  format="RGBA"
+                  @change="changeValue('background')"
+                />
               </t-form-item>
               <t-form-item
                 label="状态"
@@ -56,6 +86,70 @@
                     :key="item"
                   />
                 </t-select>
+              </t-form-item>
+            </t-collapse-panel>
+            <t-collapse-panel header="文本">
+              <t-form-item label="文本内容">
+                <t-input v-model="material.text" @change="changeValue('text')" />
+              </t-form-item>
+              <t-form-item label="字体大小">
+                <t-input-number
+                  :min="0"
+                  v-model="material.fontSize"
+                  @change="changeValue('fontSize')"
+                />
+              </t-form-item>
+              <t-form-item label="字体颜色">
+                <t-color-picker
+                  v-model="material.textColor"
+                  :show-primary-color-preview="false"
+                  :input-props="{ autoWidth: false }"
+                  class="w-full"
+                  :enableAlpha="true"
+                  :colorModes="['monochrome']"
+                  format="RGBA"
+                  @change="changeValue('textColor')"
+                />
+              </t-form-item>
+            </t-collapse-panel>
+            <t-collapse-panel header="进度">
+              <t-form-item label="进度值">
+                <t-slider
+                  v-model="material.progress"
+                  :min="0"
+                  :max="1"
+                  :step="0.1"
+                  @change="changeValue('progress')"
+                />
+              </t-form-item>
+              <t-form-item label="进度颜色">
+                <t-color-picker
+                  v-model="material.progressColor"
+                  :show-primary-color-preview="false"
+                  :input-props="{ autoWidth: false }"
+                  class="w-full"
+                  :enableAlpha="true"
+                  :colorModes="['monochrome']"
+                  format="RGBA"
+                  @change="changeValue('progressColor')"
+                />
+              </t-form-item>
+              <t-form-item label="进度方向">
+                <t-radio-group
+                  v-model="material.verticalProgress"
+                  @change="changeValue('verticalProgress')"
+                  variant="primary-filled"
+                >
+                  <t-radio-button :value="false">水平</t-radio-button>
+                  <t-radio-button :value="true">垂直</t-radio-button>
+                </t-radio-group>
+              </t-form-item>
+              <t-form-item label="进度反向">
+                <t-switch
+                  v-model="material.reverseProgress"
+                  @change="changeValue('reverseProgress')"
+                >
+                </t-switch>
               </t-form-item>
             </t-collapse-panel>
           </t-collapse>
@@ -414,6 +508,9 @@ watchEffect(() => {
 // 更新图形
 watchEffect(() => {
   material.value = selections.pen;
+  if (!material.value.verticalProgress) {
+    material.value.verticalProgress = false;
+  }
   if (selections.pen.name == 'image') {
     images.value = [{ url: selections.pen.image }];
   } else {
@@ -537,14 +634,17 @@ const handleUploadSuccess = ({ fileList }) => {
 }
 :deep(.t-upload__card-item) {
   width: 100%;
-  height: 160px;
+  height: 100%;
+  min-height: 160px;
 }
 :deep(.t-upload__card-container) {
   width: 100%;
-  height: 160px;
+  height: 100%;
+  min-height: 160px;
 }
 :deep(.t-upload__card-content) {
   width: 100%;
-  height: 160px;
+  height: 100%;
+  min-height: 160px;
 }
 </style>

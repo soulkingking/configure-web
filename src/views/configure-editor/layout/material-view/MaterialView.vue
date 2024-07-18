@@ -104,21 +104,42 @@ const shapes = ref([
     label: '矩形',
     value: 'rectangle',
     icon: <RectangleIcon size="32"></RectangleIcon>,
-    data: { name: 'rectangle', text: '矩形', width: 100, height: 100 }
+    data: {
+      name: 'rectangle',
+      text: '矩形',
+      width: 100,
+      height: 100,
+      progress: 0,
+      verticalProgress: false
+    }
   },
   {
     key: 'circle',
     label: '圆形',
     value: 'circle',
     icon: <CircleIcon size="32"></CircleIcon>,
-    data: { name: 'circle', text: '圆形', width: 100, height: 100 }
+    data: {
+      name: 'circle',
+      text: '圆形',
+      width: 100,
+      height: 100,
+      progress: 0,
+      verticalProgress: false
+    }
   },
   {
     key: 'message',
     label: '消息框',
     value: 'message',
     icon: <ChatMessageIcon size="32"></ChatMessageIcon>,
-    data: { name: 'message', text: '消息框', width: 100, height: 100 }
+    data: {
+      name: 'message',
+      text: '消息框',
+      width: 100,
+      height: 100,
+      progress: 0,
+      verticalProgress: false
+    }
   },
   {
     key: 'image',
@@ -130,7 +151,9 @@ const shapes = ref([
       text: '图片',
       width: 100,
       height: 100,
-      image: 'https://tdesign.gtimg.com/demo/demo-image-1.png'
+      image: 'https://tdesign.gtimg.com/demo/demo-image-1.png',
+      progress: 0,
+      verticalProgress: false
     }
   },
   {
@@ -138,7 +161,14 @@ const shapes = ref([
     label: '立方体',
     value: 'cube',
     icon: <ControlPlatformIcon size="32"></ControlPlatformIcon>,
-    data: { name: 'cube', text: '立方体', width: 100, height: 100 }
+    data: {
+      name: 'cube',
+      text: '立方体',
+      width: 100,
+      height: 100,
+      progress: 0,
+      verticalProgress: false
+    }
   }
 ]);
 

@@ -142,9 +142,6 @@ const handleRemove = () => {
                 @success="handleUploadSuccess"
                 @remove="handleRemove"
               >
-                <!-- <template #fileListDisplay="{ files }">
-                    <t-image v-for="(file, index) in files" :key="index" :src="file.url"></t-image>
-                  </template> -->
               </t-upload>
             </t-form-item>
           </t-collapse-panel>
@@ -157,14 +154,17 @@ const handleRemove = () => {
 <style scoped>
 :deep(.t-upload__card-item) {
   width: 100%;
-  height: 160px;
+  height: 100%;
+  min-height: 160px;
 }
 :deep(.t-upload__card-container) {
   width: 100%;
-  height: 160px;
+  height: 100%;
+  min-height: 160px;
 }
 :deep(.t-upload__card-content) {
   width: 100%;
-  height: 160px;
+  height: 100%;
+  min-height: 160px;
 }
 </style>

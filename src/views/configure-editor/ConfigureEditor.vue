@@ -66,12 +66,14 @@
         <template #operations>
           <t-space :size="8">
             <t-tooltip
-              :content="dataSheets.locked == LockState.DisableEdit ? '预览模式' : '编辑模式'"
+              :content="
+                dataSheets && dataSheets.locked == LockState.DisableEdit ? '预览模式' : '编辑模式'
+              "
             >
               <t-button variant="text" shape="square" @click="handleLocked">
                 <template #icon
                   ><LockOnIcon
-                    v-if="dataSheets.locked == LockState.DisableEdit"
+                    v-if="dataSheets && dataSheets.locked == LockState.DisableEdit"
                     size="18"
                   ></LockOnIcon
                   ><LockOffIcon v-else size="18"></LockOffIcon

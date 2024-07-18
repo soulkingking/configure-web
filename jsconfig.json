@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    // 解决prettier对于装璜器语法的正告
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    // 解决.jsx文件无奈疾速跳转的问题
+    "jsx": "preserve"
+  },
+  "exclude": ["node_modules", "dist"]
+}

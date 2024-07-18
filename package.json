@@ -1,0 +1,52 @@
+{
+  "name": "configure-web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "prettier --write src/"
+  },
+  "dependencies": {
+    "@imengyu/vue3-context-menu": "^1.4.1",
+    "@meta2d/activity-diagram": "^1.0.0",
+    "@meta2d/chart-diagram": "^1.0.7",
+    "@meta2d/class-diagram": "^1.0.1",
+    "@meta2d/core": "^1.0.51",
+    "@meta2d/flow-diagram": "^1.0.1",
+    "@meta2d/form-diagram": "^1.0.19",
+    "@meta2d/fta-diagram": "^1.0.0",
+    "@meta2d/le5le-charts": "^1.0.4",
+    "@meta2d/sequence-diagram": "^1.0.0",
+    "@meta2d/svg": "^1.0.5",
+    "@vueuse/core": "^10.11.0",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
+    "tdesign-icons-vue-next": "^0.2.2",
+    "tdesign-vue-next": "^1.9.7",
+    "vue": "^3.4.29",
+    "vue-router": "^4.3.3"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.8.0",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue-jsx": "^4.0.0",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/test-utils": "^2.4.6",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.23.0",
+    "jsdom": "^24.1.0",
+    "prettier": "^3.2.5",
+    "unocss": "^0.61.0",
+    "unplugin-auto-import": "^0.17.2",
+    "unplugin-vue-components": "^0.27.2",
+    "vite": "^5.3.1",
+    "vite-plugin-vue-devtools": "^7.3.1",
+    "vitest": "^1.6.0"
+  },
+  "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
+}

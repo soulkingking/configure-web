@@ -24,6 +24,7 @@
     "@meta2d/sequence-diagram": "^1.0.0",
     "@meta2d/svg": "^1.0.5",
     "@vueuse/core": "^10.11.0",
+    "axios": "^1.7.2",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "tdesign-icons-vue-next": "^0.2.2",

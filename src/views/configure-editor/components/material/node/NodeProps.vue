@@ -76,7 +76,11 @@
               <t-form-item
                 label="状态"
                 name="showChild"
-                v-if="material.children && material.children.length > 0"
+                v-if="
+                  material.children &&
+                  material.children.length > 0 &&
+                  material.showChild != undefined
+                "
               >
                 <t-select v-model="material.showChild" @change="changeValue('showChild')">
                   <t-option
@@ -155,7 +159,79 @@
           </t-collapse>
         </div>
       </t-tab-panel>
-      <t-tab-panel label="动效" value="animation"> <div class="p0"></div> </t-tab-panel>
+      <t-tab-panel label="动效" value="animation">
+        <div class="p0">
+          <t-collapse :default-value="[0]">
+            <t-collapse-panel
+              v-for="(animation, index) in material.animations"
+              :key="animation.animateId"
+            >
+              <template #header>
+                <t-space align="center" @click.stop="">
+                  <t-input v-model="animation.name" class="w-15" borderless></t-input>
+                  <t-button
+                    variant="text"
+                    shape="square"
+                    @click.stop="handlePlayAnimation(animation)"
+                    v-if="material.currentAnimation != index"
+                    ><template #icon><PlayCircleIcon size="18" /></template
+                  ></t-button>
+                  <t-button variant="text" shape="square" @click.stop="handleStopAnimation" v-else
+                    ><template #icon><StopCircleIcon size="18" /></template
+                  ></t-button>
+                </t-space>
+              </template>
+              <template #headerRightContent>
+                <t-space size="small">
+                  <t-button
+                    variant="text"
+                    shape="square"
+                    @click.stop="handleEditAnimation(animation)"
+                  >
+                    <template #icon><EditIcon /></template
+                  ></t-button>
+                  <t-popconfirm
+                    content="确认删除该动画吗?"
+                    placement="left"
+                    @confirm="handleDeleteAnimation(animation)"
+                  >
+                    <t-button variant="text" shape="square">
+                      <template #icon><DeleteIcon /></template
+                    ></t-button>
+                  </t-popconfirm>
+                </t-space>
+              </template>
+              <!-- <t-form-item label="动画类型">
+                <t-select v-model="animation.lineAnimateType" @change="changeValue('animations')">
+                  <t-option
+                    v-for="item in LINE_ANIMATE_TYPE"
+                    :value="item.value"
+                    :label="item.label"
+                    :key="item.key"
+                  />
+                </t-select>
+              </t-form-item> -->
+              <t-form-item label="播放次数">
+                <t-input-number
+                  v-model="animation.animateCycle"
+                  @change="changeValue('animations')"
+                ></t-input-number>
+              </t-form-item>
+              <t-form-item label="自动播放">
+                <t-switch
+                  v-model="animation.autoPlay"
+                  @change="(value) => handleChangeAutoPlay(value, animation)"
+                ></t-switch>
+              </t-form-item>
+            </t-collapse-panel>
+          </t-collapse>
+        </div>
+        <div class="p0">
+          <div class="animation-btn">
+            <t-button block @click="handleAddAnimation">添加动画</t-button>
+          </div>
+        </div>
+      </t-tab-panel>
       <t-tab-panel label="数据" value="data"> <div class="p0"></div> </t-tab-panel>
       <t-tab-panel label="状态" value="event"> <div class="p0"></div> </t-tab-panel>
       <t-tab-panel label="交互" value="structure">
@@ -328,7 +404,7 @@
                         <t-auto-complete
                           v-model="action.params"
                           clearable
-                          :options="animations"
+                          :options="animationsSelected"
                         ></t-auto-complete>
                       </t-form-item>
                     </template>
@@ -357,7 +433,7 @@
                         <t-auto-complete
                           v-model="action.params"
                           clearable
-                          :options="animations"
+                          :options="animationsSelected"
                         ></t-auto-complete>
                       </t-form-item>
                     </template>
@@ -386,11 +462,11 @@
                         <t-auto-complete
                           v-model="action.params"
                           clearable
-                          :options="animations"
+                          :options="animationsSelected"
                         ></t-auto-complete>
                       </t-form-item>
                     </template>
-                    <!--  -->
+                    <!-- 设置属性 -->
                     <template v-if="action.action === EVENT_ACTION_ENUM.SET_PROPS">
                       <t-form-item label="对象类型">
                         <t-radio-group v-model="action.targetType">
@@ -442,6 +518,15 @@
                         </div>
                       </t-form-item>
                     </template>
+                    <!-- 发送事件 -->
+                    <template v-if="action.action === EVENT_ACTION_ENUM.EMIT">
+                      <t-form-item label="事件名称">
+                        <t-input v-model="action.value"></t-input>
+                      </t-form-item>
+                      <t-form-item label="事件参数">
+                        <t-input v-model="action.params"></t-input>
+                      </t-form-item>
+                    </template>
                   </template>
                 </template>
                 <t-button variant="text" theme="primary" @click="handleAddAction(event)"
@@ -465,12 +550,137 @@
         </div>
       </t-tab-panel>
     </t-tabs>
+    <t-drawer
+      v-model:visible="animationVisible"
+      v-if="animationSelected"
+      :header="animationSelected.name"
+      size="320px"
+      attach=".configure-editor-body"
+      showInAttachedElement
+      destroy-on-close
+      class="frames-drawer"
+      :footer="null"
+    >
+      <div v-if="animationSelected">
+        <t-form :model="animationSelected" label-width="100px" label-align="left">
+          <t-collapse :default-value="[0]">
+            <t-collapse-panel
+              :header="'帧' + (index + 1)"
+              v-for="(frame, index) in animationSelected.frames"
+              :key="index"
+            >
+              <template #headerRightContent>
+                <t-space size="small">
+                  <t-dropdown
+                    :options="attributes"
+                    @click="(item) => handleAddFrameAttribute(frame, item)"
+                  >
+                    <t-button variant="text" shape="square">
+                      <template #icon><FileAddIcon /></template
+                    ></t-button>
+                  </t-dropdown>
+
+                  <t-popconfirm
+                    content="确认删除该帧吗?"
+                    placement="left"
+                    @confirm="handleDeleteFrame(frame)"
+                  >
+                    <t-button variant="text" shape="square">
+                      <template #icon><DeleteIcon /></template
+                    ></t-button>
+                  </t-popconfirm>
+                </t-space>
+              </template>
+              <t-form-item label="时长">
+                <t-input-number
+                  v-model="frame.duration"
+                  @change="changeAnimationValue"
+                  align="left"
+                  theme="normal"
+                  min="0"
+                >
+                  <template #suffix><span>ms</span></template>
+                </t-input-number>
+              </t-form-item>
+              <t-form-item label="显示" v-if="hasAttribute(frame, 'visible')">
+                <t-switch v-model="frame.visible" @change="changeAnimationValue"> </t-switch>
+              </t-form-item>
+              <t-form-item label="缩放" v-if="hasAttribute(frame, 'scale')">
+                <t-input-number
+                  v-model="frame.scale"
+                  @change="changeAnimationValue"
+                  align="left"
+                  theme="normal"
+                  min="0"
+                >
+                </t-input-number>
+              </t-form-item>
+              <t-form-item label="线宽度" v-if="hasAttribute(frame, 'lineWidth')">
+                <t-input-number
+                  v-model="frame.lineWidth"
+                  @change="changeAnimationValue"
+                  align="left"
+                  theme="normal"
+                  min="0"
+                >
+                </t-input-number>
+              </t-form-item>
+              <t-form-item label="线颜色" v-if="hasAttribute(frame, 'color')">
+                <t-color-picker
+                  v-model="frame.color"
+                  :show-primary-color-preview="false"
+                  :input-props="{ autoWidth: false }"
+                  class="w-full"
+                  :enableAlpha="true"
+                  :colorModes="['monochrome']"
+                  format="RGBA"
+                  @change="changeAnimationValue"
+                />
+              </t-form-item>
+              <t-form-item label="背景颜色" v-if="hasAttribute(frame, 'background')">
+                <t-color-picker
+                  v-model="frame.background"
+                  :show-primary-color-preview="false"
+                  :input-props="{ autoWidth: false }"
+                  class="w-full"
+                  :enableAlpha="true"
+                  :colorModes="['monochrome']"
+                  format="RGBA"
+                  @change="changeAnimationValue"
+                />
+              </t-form-item>
+              <t-form-item label="旋转" v-if="hasAttribute(frame, 'rotate')">
+                <t-input-number
+                  v-model="frame.rotate"
+                  @change="changeAnimationValue"
+                  align="left"
+                  theme="normal"
+                  min="-360"
+                  max="360"
+                >
+                  <template #suffix><span>°</span></template>
+                </t-input-number>
+              </t-form-item>
+            </t-collapse-panel>
+          </t-collapse>
+        </t-form>
+      </div>
+    </t-drawer>
   </t-form>
 </template>
 
 <script setup>
 import { ref, inject, watchEffect } from 'vue';
-import { AddIcon, ArrowRightIcon, DeleteIcon, CloseIcon } from 'tdesign-icons-vue-next';
+import {
+  AddIcon,
+  ArrowRightIcon,
+  DeleteIcon,
+  CloseIcon,
+  PlayCircleIcon,
+  StopCircleIcon,
+  EditIcon,
+  FileAddIcon
+} from 'tdesign-icons-vue-next';
 import { s8, deepClone } from '@meta2d/core';
 import {
   EVENT_NAME,
@@ -497,10 +707,117 @@ const material = ref(null);
 // 结构
 const structures = ref([]);
 // 动画
-const animations = ref([]);
+const animationsSelected = ref([]);
+// 帧动画编辑界面
+const animationVisible = ref(false);
+// 帧动画
+const animationSelected = ref(null);
 // 图片
 const images = ref([]);
+// 属性
+const attributes = ref([
+  {
+    content: '显示',
+    label: '显示',
+    value: 'visible',
+    text: 'visible',
+    key: 'visible',
+    defaultValue: true
+  },
+  { content: '缩放', label: '缩放', value: 'scale', text: 'scale', key: 'scale' },
+  { content: '旋转', label: '旋转', value: 'rotate', text: 'rotate', key: 'rotate' },
+  { content: 'x位移', label: 'x位移', value: 'x', text: 'x', key: 'x' },
+  { content: 'y位移', label: 'y位移', value: 'y', text: 'y', key: 'y' },
+  { content: '前景颜色', label: '前景颜色', value: 'color', text: 'color', key: 'color' },
+  {
+    content: '背景颜色',
+    label: '背景颜色',
+    value: 'background',
+    text: 'background',
+    key: 'background'
+  },
+  {
+    content: '文字',
+    label: '文字',
+    value: 'text',
+    text: 'text',
+    key: 'text'
+  },
+  {
+    content: '水平翻转',
+    label: '水平翻转',
+    value: 'flipX',
+    text: 'flipX',
+    key: 'flipX'
+  },
+  {
+    content: '垂直翻转',
+    label: '垂直翻转',
+    value: 'flipY',
+    text: 'flipY',
+    key: 'flipY'
+  },
+  {
+    content: '进度',
+    label: '进度',
+    value: 'progress',
+    text: 'progress',
+    key: 'progress'
+  },
+  {
+    content: '透明度',
+    label: '透明度',
+    value: 'globalAlpha',
+    text: 'globalAlpha',
+    key: 'globalAlpha'
+  },
+  {
+    content: '字体大小',
+    label: '字体大小',
+    value: 'fontSize',
+    text: 'fontSize',
+    key: 'fontSize'
+  },
+  {
+    content: '文字颜色',
+    label: '文字颜色',
+    value: 'textColor',
+    text: 'textColor',
+    key: 'textColor'
+  },
+  {
+    content: '文字背景',
+    label: '文字背景',
+    value: 'textBackground',
+    text: 'textBackground',
+    key: 'textBackground'
+  },
+  {
+    content: '文字背景',
+    label: '文字背景',
+    value: 'textBackground',
+    text: 'textBackground',
+    key: 'textBackground'
+  },
+  {
+    content: '文字倾斜',
+    label: '文字倾斜',
+    value: 'fontStyle',
+    text: 'fontStyle',
+    key: 'fontStyle'
+  },
+  {
+    content: '文字加粗',
+    label: '文字加粗',
+    value: 'fontWeight',
+    text: 'fontWeight',
+    key: 'fontWeight'
+  }
+]);
 
+const hasAttribute = (attribute = {}, key) => {
+  return key in attribute;
+};
 // 更新结构
 watchEffect(() => {
   structures.value = handleTree(deepClone(meta2d.value.store.data.pens));
@@ -508,10 +825,10 @@ watchEffect(() => {
 // 更新图形
 watchEffect(() => {
   material.value = selections.pen;
-  if (!material.value.verticalProgress) {
+  if (material.value && !material.value.verticalProgress) {
     material.value.verticalProgress = false;
   }
-  if (selections.pen.name == 'image') {
+  if (selections.pen && selections.pen.name == 'image') {
     images.value = [{ url: selections.pen.image }];
   } else {
     images.value = [];
@@ -588,11 +905,11 @@ const handleDeleteAction = (event, action) => {
 const handleActionValueChange = (value, context) => {
   if (context) {
     const node = context.node.data;
-    animations.value = deepClone(node.animations || []).map((item) => ({
+    animationsSelected.value = deepClone(node.animations || []).map((item) => ({
       ...item,
       text: item.name
     }));
-    console.log(animations.value);
+    console.log(animationsSelected.value);
   }
 };
 
@@ -627,6 +944,81 @@ const handleUploadSuccess = ({ fileList }) => {
   material.value.image = fileList[0].url;
   changeValue('image');
 };
+
+// 添加动效
+const handleAddAnimation = () => {
+  const animations = material.value.animations || [];
+  material.value.animations = [
+    ...animations,
+    {
+      animateId: s8(),
+      name: '动画' + (animations.length + 1),
+      temType: 'id',
+      animate: '闪烁',
+      frames: [
+        { duration: 300, scale: 0.5, lineWidth: 1, color: 'rgba(7, 141, 92, 1)', frameId: s8() },
+        { duration: 300, scale: 1, lineWidth: 20, color: 'rgba(7, 141, 92, 0.3)', frameId: s8() }
+      ]
+    }
+  ];
+  changeValue('animations');
+};
+
+// 删除动效
+const handleDeleteAnimation = (animation) => {
+  const animations = material.value.animations || [];
+  material.value.animations = animations.filter((item) => item.animateId !== animation.animateId);
+  changeValue('animations');
+  handleStopAnimation();
+};
+
+// 如果是自动播放，则将其他动效设置为非自动播放
+const handleChangeAutoPlay = (autoPlay, animation) => {
+  if (autoPlay) {
+    const animations = material.value.animations || [];
+    animations
+      .filter((item) => item.animateId != animation.animateId)
+      .map((item) => (item.autoPlay = false));
+  }
+  changeValue('animations');
+};
+
+// 播放动画
+const handlePlayAnimation = (animation) => {
+  meta2d.value.startAnimate(material.value.id, animation.name);
+};
+
+// 停止动画
+const handleStopAnimation = () => {
+  meta2d.value.stopAnimate(material.value.id);
+};
+
+// 编辑动画
+const handleEditAnimation = (animation) => {
+  animationSelected.value = animation;
+  animationVisible.value = true;
+};
+
+// 更新帧动画
+const changeAnimationValue = () => {
+  const animation = material.value.animations.find(
+    (item) => item.animateId == animationSelected.value.animateId
+  );
+  animation.frames = animationSelected.value.frames;
+  changeValue('animations');
+};
+
+// 删除帧动画
+const handleDeleteFrame = (frame) => {
+  const frames = animationSelected.value.frames || [];
+  animationSelected.value.frames = frames.filter((item) => item.frameId !== frame.frameId);
+  changeAnimationValue();
+};
+
+// 添加帧属性
+const handleAddFrameAttribute = (frame, item) => {
+  frame[item.value] = item.defaultValue ? item.defaultValue : undefined;
+};
 </script>
 <style scoped>
 .event-btn {
@@ -646,5 +1038,9 @@ const handleUploadSuccess = ({ fileList }) => {
   width: 100%;
   height: 100%;
   min-height: 160px;
+}
+
+.animation-btn {
+  padding: var(--td-comp-paddingTB-m) var(--td-comp-paddingLR-l);
 }
 </style>

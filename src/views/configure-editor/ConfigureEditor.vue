@@ -103,7 +103,7 @@
         </template>
       </t-head-menu>
     </t-header>
-    <t-layout>
+    <t-layout class="configure-editor-body">
       <t-aside class="border-t-1 border-t-transparent border-t-solid shadow w-80 z-2">
         <MaterialView v-if="meta2d"></MaterialView>
       </t-aside>
@@ -148,9 +148,14 @@ import { LINE_NAME, LINE_NAME_ENUM } from '@/common/configure-common';
 import { LockState } from '@meta2d/core';
 import { storeToRefs } from 'pinia';
 import { useTheme } from '@/hooks/useTheme';
+import { handleTree } from '@/util';
 // 编辑器实例
 const meta2d = ref();
+// 结构
+const structures = ref([]);
 provide('meta2d', meta2d);
+provide('structures', structures);
+
 const configureEditorStore = useConfigureEditorStore();
 const { setDataSheets } = configureEditorStore;
 const { dataSheets } = storeToRefs(configureEditorStore);
@@ -182,24 +187,36 @@ const handleSave = useDebounceFn(
   false
 );
 
-// 保存
-const { start: save } = useTimeoutFn(() => {
+// 更新结构
+const handleUpdateStructure = () => {
+  if (meta2d.value) {
+    structures.value = handleTree(meta2d.value.store.data.pens, 'id', 'parentId', 'childrenPens');
+  }
+};
+
+// 自动保存
+const { start: handleAutoSave } = useTimeoutFn(() => {
   if (meta2d.value) {
     setDataSheets(meta2d.value.data());
+    handleUpdateStructure();
   }
 }, Config.settingConfig.timeoutTime);
 
 onMounted(() => {
   nextTick(() => {
-    meta2d.value.on('scale', save);
-    meta2d.value.on('add', save);
-    meta2d.value.on('opened', save);
-    meta2d.value.on('undo', save);
-    meta2d.value.on('redo', save);
-    meta2d.value.on('add', save);
-    meta2d.value.on('delete', save);
-    meta2d.value.on('rotatePens', save);
-    meta2d.value.on('translatePens', save);
+    meta2d.value.on('scale', handleAutoSave);
+    meta2d.value.on('add', handleAutoSave);
+    meta2d.value.on('opened', handleAutoSave);
+    meta2d.value.on('undo', handleAutoSave);
+    meta2d.value.on('redo', handleAutoSave);
+    meta2d.value.on('delete', handleAutoSave);
+    meta2d.value.on('rotatePens', handleAutoSave);
+    meta2d.value.on('translatePens', handleAutoSave);
+    meta2d.value.on('autoSave', handleAutoSave);
+    meta2d.value.on('updateStructure', handleUpdateStructure);
+    meta2d.value.on('test', (e) => {
+      console.log(e);
+    });
   });
 });
 
@@ -236,4 +253,20 @@ const handleLocked = () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.configure-editor-body {
+  position: relative;
+}
+
+:deep(.t-collapse) {
+  border: none;
+}
+
+:deep(.frames-drawer .t-drawer__body) {
+  padding: 0;
+}
+
+:deep(.t-collapse-panel__wrapper .t-collapse-panel__content) {
+  padding: var(--td-comp-paddingTB-m) var(--td-comp-paddingLR-l);
+}
+</style>

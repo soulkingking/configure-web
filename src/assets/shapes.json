@@ -1,0 +1,73 @@
+[
+  {
+    "key": "rectangle",
+    "label": "矩形",
+    "value": "rectangle",
+    "icon": "rectangle",
+    "data": {
+      "name": "rectangle",
+      "text": "矩形",
+      "width": 100,
+      "height": 100,
+      "progress": 0,
+      "verticalProgress": false
+    }
+  },
+  {
+    "key": "circle",
+    "label": "圆形",
+    "value": "circle",
+    "icon": "circle",
+    "data": {
+      "name": "circle",
+      "text": "圆形",
+      "width": 100,
+      "height": 100,
+      "progress": 0,
+      "verticalProgress": false
+    }
+  },
+  {
+    "key": "message",
+    "label": "消息框",
+    "value": "message",
+    "icon": "chat-message",
+    "data": {
+      "name": "message",
+      "text": "消息框",
+      "width": 100,
+      "height": 100,
+      "progress": 0,
+      "verticalProgress": false
+    }
+  },
+  {
+    "key": "image",
+    "label": "图片",
+    "value": "image",
+    "icon": "image",
+    "data": {
+      "name": "image",
+      "text": "图片",
+      "width": 100,
+      "height": 100,
+      "image": "https://tdesign.gtimg.com/demo/demo-image-1.png",
+      "progress": 0,
+      "verticalProgress": false
+    }
+  },
+  {
+    "key": "cube",
+    "label": "立方体",
+    "value": "cube",
+    "icon": "control-platform",
+    "data": {
+      "name": "cube",
+      "text": "立方体",
+      "width": 100,
+      "height": 100,
+      "progress": 0,
+      "verticalProgress": false
+    }
+  }
+]

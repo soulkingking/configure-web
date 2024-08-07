@@ -1,10 +1,24 @@
 <script setup>
-import { ref, inject, onMounted } from 'vue';
+import { ref, inject, onMounted, computed } from 'vue';
+import API from '@/api/API';
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/stores/user';
 const meta2d = inject('meta2d');
+const userStore = useUserStore();
+const { token } = storeToRefs(userStore);
+
 const file = ref(null);
 const backgroundImage = ref([]);
 
 const active = ref('basic');
+
+const uploadConfig = computed(() => {
+  return {
+    action: API.uploadFile,
+    headers: { Authorization: token.value },
+    max: 1
+  };
+});
 
 onMounted(() => {
   file.value = meta2d.value.store.data;
@@ -14,10 +28,12 @@ onMounted(() => {
   if (!file.value.height) {
     file.value.height = 1080;
   }
+  if (file.value.rule === undefined) {
+    file.value.rule = true;
+  }
   if (file.value.backgroundImage) {
     backgroundImage.value = [{ url: file.value.backgroundImage }];
   }
-  console.log(file);
 });
 
 // 设置数据
@@ -48,6 +64,7 @@ const changeRule = () => {
 const changeBackgroundImage = () => {
   meta2d.value.setBackgroundImage(file.value.backgroundImage);
   meta2d.value.render();
+  console.log(meta2d.value.data());
 };
 
 // 上传图片
@@ -66,7 +83,8 @@ const uploadImage = (file) => {
 
 // 上传成功
 const handleUploadSuccess = ({ fileList }) => {
-  file.value.backgroundImage = fileList[0].url;
+  console.log(fileList);
+  file.value.backgroundImage = API.download + fileList[0].response.result;
   changeBackgroundImage();
 };
 
@@ -135,9 +153,10 @@ const handleRemove = () => {
               <t-upload
                 theme="image"
                 accept="image/*"
+                v-bind="uploadConfig"
                 v-model="backgroundImage"
                 class="w-full"
-                :requestMethod="uploadImage"
+                :auto-upload="true"
                 :show-image-file-name="false"
                 @success="handleUploadSuccess"
                 @remove="handleRemove"

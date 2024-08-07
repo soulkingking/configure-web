@@ -6,24 +6,27 @@
     <t-tab-panel label="系统组件" value="basic">
       <div class="p2">
         <t-collapse expand-icon-placement="right" :borderless="true">
-          <t-collapse-panel header="基本形状">
+          <t-collapse-panel
+            :header="materialIcon.name"
+            v-for="materialIcon in materialIcons"
+            :key="materialIcon.name"
+          >
             <div class="grid grid-cols-3 gap-3">
               <div
                 class="cursor-pointer py-2 border-1px border-solid border-transparent rounded-sm hover:border-blue-6"
-                v-for="shape in shapes"
+                v-for="shape in materialIcon.list"
                 :key="shape.key"
                 draggable="true"
                 @dragstart="onDragstart($event, shape.data)"
               >
                 <div class="w-full h-8 text-center">
-                  <component :is="shape.icon.type" v-bind="shape.icon.props"></component>
+                  <t-icon :name="shape.icon" size="32px" v-if="shape.icon"></t-icon>
+                  <img v-else-if="shape.image" :src="shape.image" class="w-8 h-8" />
+                  <div v-else-if="shape.svg" v-html="shape.svg" class="w-8 h-8"></div>
                 </div>
                 <div class="w-full text-center mt-2">{{ shape.label }}</div>
               </div>
             </div>
-          </t-collapse-panel>
-          <t-collapse-panel header="工业形状">
-            <t-space break-line> </t-space>
           </t-collapse-panel>
         </t-collapse>
       </div>
@@ -71,116 +74,26 @@
 </template>
 
 <script setup lang="jsx">
-import { ref, inject, watchEffect } from 'vue';
-import { handleTree } from '@/util';
+import { ref, inject, watchEffect, onMounted } from 'vue';
 import { deepClone } from '@meta2d/core';
 import { useSelection } from '@/hooks/useSelection';
-import {
-  ControlPlatformIcon,
-  DeleteIcon,
-  BrowseIcon,
-  BrowseOffIcon,
-  RectangleIcon,
-  CircleIcon,
-  ChatMessageIcon,
-  ImageIcon
-} from 'tdesign-icons-vue-next';
+import { ControlPlatformIcon, DeleteIcon, BrowseIcon, BrowseOffIcon } from 'tdesign-icons-vue-next';
 import { MessagePlugin } from 'tdesign-vue-next';
+import { useIcons } from './useIcons';
 const meta2d = inject('meta2d');
+const structures = inject('structures');
+
 const active = ref('basic');
 // 选中的图形
 const material = ref(null);
 // 当前激活的图形
 const actived = ref([]);
-// 结构
-const structures = ref([]);
 
 const { selections, select } = useSelection();
+const { icons, getOtherIcons } = useIcons();
 
 // 基础形状
-const shapes = ref([
-  {
-    key: 'rectangle',
-    label: '矩形',
-    value: 'rectangle',
-    icon: <RectangleIcon size="32"></RectangleIcon>,
-    data: {
-      name: 'rectangle',
-      text: '矩形',
-      width: 100,
-      height: 100,
-      progress: 0,
-      verticalProgress: false
-    }
-  },
-  {
-    key: 'circle',
-    label: '圆形',
-    value: 'circle',
-    icon: <CircleIcon size="32"></CircleIcon>,
-    data: {
-      name: 'circle',
-      text: '圆形',
-      width: 100,
-      height: 100,
-      progress: 0,
-      verticalProgress: false
-    }
-  },
-  {
-    key: 'message',
-    label: '消息框',
-    value: 'message',
-    icon: <ChatMessageIcon size="32"></ChatMessageIcon>,
-    data: {
-      name: 'message',
-      text: '消息框',
-      width: 100,
-      height: 100,
-      progress: 0,
-      verticalProgress: false
-    }
-  },
-  {
-    key: 'image',
-    label: '图片',
-    value: 'image',
-    icon: <ImageIcon size="32"></ImageIcon>,
-    data: {
-      name: 'image',
-      text: '图片',
-      width: 100,
-      height: 100,
-      image: 'https://tdesign.gtimg.com/demo/demo-image-1.png',
-      progress: 0,
-      verticalProgress: false
-    }
-  },
-  {
-    key: 'cube',
-    label: '立方体',
-    value: 'cube',
-    icon: <ControlPlatformIcon size="32"></ControlPlatformIcon>,
-    data: {
-      name: 'cube',
-      text: '立方体',
-      width: 100,
-      height: 100,
-      progress: 0,
-      verticalProgress: false
-    }
-  }
-]);
-
-// 更新结构
-watchEffect(() => {
-  structures.value = handleTree(
-    deepClone(meta2d.value.store.data.pens),
-    'id',
-    'parentId',
-    'childrenPens'
-  );
-});
+const materialIcons = ref(icons);
 
 // 更新图形
 watchEffect(() => {
@@ -203,14 +116,12 @@ const handleActived = () => {
     let pens = deepClone(meta2d.value.store.data.pens) || [];
     let activedPens = pens.filter((item) => actived.value.includes(item.id));
     select(activedPens);
-    console.log(activedPens);
     // meta2d.value.active(activedPens);
   }
 };
 
 // 显示隐藏
 const handleVisible = (node) => {
-  console.log(node.data, node.data.visible == false ? true : false);
   meta2d.value.setVisible(node.data, node.data.visible == false ? true : false);
 };
 
@@ -220,6 +131,11 @@ const handleDelete = (node) => {
   MessagePlugin.success('删除成功');
   select();
 };
+
+onMounted(async () => {
+  const icons = await getOtherIcons();
+  materialIcons.value.push(...icons.flat(2));
+});
 </script>
 
 <style scoped>

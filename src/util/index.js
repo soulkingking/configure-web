@@ -86,3 +86,13 @@ export const generateEnum = (data = []) => {
   // 返回构建完成的枚举对象。
   return result;
 };
+
+/**
+ * 获取默认服务器地址
+ * @returns
+ */
+export function getBaseUrl() {
+  return import.meta.env.MODE === 'production'
+    ? window.location.origin + import.meta.env.VITE_APP_BASE_API
+    : import.meta.env.VITE_APP_BASE_API;
+}

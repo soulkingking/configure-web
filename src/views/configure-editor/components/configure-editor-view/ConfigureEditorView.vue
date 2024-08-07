@@ -44,6 +44,7 @@ const getMenuData = () => {
         onClick: () => {
           meta2d.value.top(selections.pen);
           MessagePlugin.success('置顶成功');
+          ContextMenu.closeContextMenu();
         }
       },
       {
@@ -54,6 +55,7 @@ const getMenuData = () => {
         onClick: () => {
           meta2d.value.bottom(selections.pen);
           MessagePlugin.success('置底成功');
+          ContextMenu.closeContextMenu();
         }
       },
       {
@@ -63,14 +65,27 @@ const getMenuData = () => {
         onClick: () => {
           meta2d.value.delete([selections.pen]);
           MessagePlugin.success('删除成功');
+          ContextMenu.closeContextMenu();
+        }
+      },
+      {
+        label: '组合',
+        icon: <CombinationIcon />,
+        hidden: selections.mode !== SELECTION_MODE_ENUM.COMBINE,
+        onClick: () => {
+          meta2d.value.combine(selections.pen);
+          ContextMenu.closeContextMenu();
+          meta2d.value.emit('updateStructure');
         }
       },
       {
         label: '组合状态',
         icon: <CombinationIcon />,
-        disabled: selections.mode !== SELECTION_MODE_ENUM.COMBINE,
+        hidden: selections.mode !== SELECTION_MODE_ENUM.COMBINE,
         onClick: () => {
           meta2d.value.combine(selections.pen, 0);
+          ContextMenu.closeContextMenu();
+          meta2d.value.emit('updateStructure');
         }
       },
       {
@@ -83,6 +98,8 @@ const getMenuData = () => {
         ),
         onClick: () => {
           meta2d.value.uncombine(selections.pen);
+          ContextMenu.closeContextMenu();
+          meta2d.value.emit('updateStructure');
         }
       }
     ]

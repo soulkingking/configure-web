@@ -161,14 +161,221 @@ export const ATTRIBUTE = [
     label: '显示',
     value: 'visible',
     text: 'visible',
-    key: 'visible'
+    key: 'visible',
+    defaultValue: true
   },
   {
     content: '状态',
     label: '状态',
     value: 'showChild',
     text: 'showChild',
-    key: 'showChild'
+    key: 'showChild',
+    defaultValue: 0
+  },
+  { content: '缩放', label: '缩放', value: 'scale', text: 'scale', key: 'scale' },
+  { content: '旋转', label: '旋转', value: 'rotate', text: 'rotate', key: 'rotate' },
+  { content: 'x位移', label: 'x位移', value: 'x', text: 'x', key: 'x' },
+  { content: 'y位移', label: 'y位移', value: 'y', text: 'y', key: 'y' },
+  { content: '宽', label: '宽', value: 'width', text: 'width', key: 'width' },
+  { content: '高', label: '高', value: 'height', text: 'height', key: 'height' },
+  { content: '前景颜色', label: '前景颜色', value: 'color', text: 'color', key: 'color' },
+  {
+    content: '背景颜色',
+    label: '背景颜色',
+    value: 'background',
+    text: 'background',
+    key: 'background'
+  },
+
+  {
+    content: '水平翻转',
+    label: '水平翻转',
+    value: 'flipX',
+    text: 'flipX',
+    key: 'flipX',
+    defaultValue: false
+  },
+  {
+    content: '垂直翻转',
+    label: '垂直翻转',
+    value: 'flipY',
+    text: 'flipY',
+    key: 'flipY',
+    defaultValue: false
+  },
+  {
+    content: '进度',
+    label: '进度',
+    value: 'progress',
+    text: 'progress',
+    key: 'progress'
+  },
+  {
+    content: '透明度',
+    label: '透明度',
+    value: 'globalAlpha',
+    text: 'globalAlpha',
+    key: 'globalAlpha'
+  },
+  {
+    content: '线条样式',
+    label: '线条样式',
+    value: 'dash',
+    text: 'dash',
+    key: 'dash'
+  },
+  {
+    content: '文字',
+    label: '文字',
+    value: 'text',
+    text: 'text',
+    key: 'text'
+  },
+  {
+    content: '字体大小',
+    label: '字体大小',
+    value: 'fontSize',
+    text: 'fontSize',
+    key: 'fontSize'
+  },
+  {
+    content: '文字颜色',
+    label: '文字颜色',
+    value: 'textColor',
+    text: 'textColor',
+    key: 'textColor'
+  },
+  {
+    content: '文字背景',
+    label: '文字背景',
+    value: 'textBackground',
+    text: 'textBackground',
+    key: 'textBackground'
+  },
+  {
+    content: '文字倾斜',
+    label: '文字倾斜',
+    value: 'fontStyle',
+    text: 'fontStyle',
+    key: 'fontStyle',
+    defaultValue: 'normal'
+  },
+  {
+    content: '文字加粗',
+    label: '文字加粗',
+    value: 'fontWeight',
+    text: 'fontWeight',
+    key: 'fontWeight',
+    defaultValue: 'normal'
+  }
+];
+
+// 动画属性
+export const FRAME_ATTRIBUTE = [
+  {
+    content: '显示',
+    label: '显示',
+    value: 'visible',
+    text: 'visible',
+    key: 'visible',
+    defaultValue: true
+  },
+  // {
+  //   content: '状态',
+  //   label: '状态',
+  //   value: 'showChild',
+  //   text: 'showChild',
+  //   key: 'showChild',
+  //   defaultValue: 0
+  // },
+  { content: '缩放', label: '缩放', value: 'scale', text: 'scale', key: 'scale' },
+  { content: '旋转', label: '旋转', value: 'rotate', text: 'rotate', key: 'rotate' },
+  { content: 'x位移', label: 'x位移', value: 'x', text: 'x', key: 'x' },
+  { content: 'y位移', label: 'y位移', value: 'y', text: 'y', key: 'y' },
+  // { content: '宽', label: '宽', value: 'width', text: 'width', key: 'width' },
+  // { content: '高', label: '高', value: 'height', text: 'height', key: 'height' },
+  { content: '前景颜色', label: '前景颜色', value: 'color', text: 'color', key: 'color' },
+  {
+    content: '背景颜色',
+    label: '背景颜色',
+    value: 'background',
+    text: 'background',
+    key: 'background'
+  },
+
+  {
+    content: '水平翻转',
+    label: '水平翻转',
+    value: 'flipX',
+    text: 'flipX',
+    key: 'flipX',
+    defaultValue: false
+  },
+  {
+    content: '垂直翻转',
+    label: '垂直翻转',
+    value: 'flipY',
+    text: 'flipY',
+    key: 'flipY',
+    defaultValue: false
+  },
+  {
+    content: '进度',
+    label: '进度',
+    value: 'progress',
+    text: 'progress',
+    key: 'progress'
+  },
+  {
+    content: '透明度',
+    label: '透明度',
+    value: 'globalAlpha',
+    text: 'globalAlpha',
+    key: 'globalAlpha'
+  },
+  {
+    content: '文字',
+    label: '文字',
+    value: 'text',
+    text: 'text',
+    key: 'text'
+  },
+  {
+    content: '字体大小',
+    label: '字体大小',
+    value: 'fontSize',
+    text: 'fontSize',
+    key: 'fontSize'
+  },
+  {
+    content: '文字颜色',
+    label: '文字颜色',
+    value: 'textColor',
+    text: 'textColor',
+    key: 'textColor'
+  },
+  {
+    content: '文字背景',
+    label: '文字背景',
+    value: 'textBackground',
+    text: 'textBackground',
+    key: 'textBackground'
+  },
+  {
+    content: '文字倾斜',
+    label: '文字倾斜',
+    value: 'fontStyle',
+    text: 'fontStyle',
+    key: 'fontStyle',
+    defaultValue: 'normal'
+  },
+  {
+    content: '文字加粗',
+    label: '文字加粗',
+    value: 'fontWeight',
+    text: 'fontWeight',
+    key: 'fontWeight',
+    defaultValue: 'normal'
   }
 ];
 
@@ -347,6 +554,39 @@ export const LINE_NAME = [
   }
 ];
 
+// 线条样式
+export const DASH_TYPE = [
+  {
+    label: '无',
+    value: -1,
+    key: 'none',
+    lineWidth: 0
+  },
+  {
+    label: '实线',
+    value: 0,
+    key: 'solid'
+  },
+  {
+    label: '短虚线',
+    value: 1,
+    key: 'shortDashed',
+    lineDash: [5, 5]
+  },
+  {
+    label: '长虚线',
+    value: 2,
+    key: 'longDashed',
+    lineDash: [10, 10]
+  },
+  {
+    label: '虚点线',
+    value: 3,
+    key: 'dashDotted',
+    lineDash: [10, 10, 2, 10]
+  }
+];
+
 /**
  * @typedef {Object} EVENT_NAME_ENUM
  * @property {string} CLICK - 点击事件
@@ -423,11 +663,49 @@ export const CONDITION_TYPE_ENUM = {
 
 /**
  * @typedef {Object} ATTRIBUTE_ENUM
+ * @property {string} VISIBLE - 是否可见属性
  * @property {string} SHOW_CHILD - 显示子项属性
+ * @property {string} SCALE - 缩放属性
+ * @property {string} ROTATE - 旋转属性
+ * @property {string} X - x位移属性
+ * @property {string} Y - y位移属性
+ * @property {string} WIDTH - 宽度属性
+ * @property {string} HEIGHT - 高度属性
+ * @property {string} COLOR - 颜色属性
+ * @property {string} BACKGROUND - 背景颜色属性
+ * @property {string} FLIP_X - 水平翻转属性
+ * @property {string} FLIP_Y - 垂直翻转属性
+ * @property {string} PROGRESS - 进度属性
+ * @property {string} GLOBAL_ALPHA - 全局透明度属性
+ * @property {string} TEXT - 文本内容属性
+ * @property {string} FONT_SIZE - 字体大小属性
+ * @property {string} TEXT_COLOR - 文本颜色属性
+ * @property {string} TEXT_BACKGROUND - 文本背景颜色属性
+ * @property {string} FONT_STYLE - 字体样式属性
+ * @property {string} FONT_WEIGHT - 字体粗细属性
  */
 export const ATTRIBUTE_ENUM = {
   VISIBLE: 'visible',
-  SHOW_CHILD: 'showChild'
+  SHOW_CHILD: 'showChild',
+  SCALE: 'scale',
+  ROTATE: 'rotate',
+  X: 'x',
+  Y: 'y',
+  WIDTH: 'width',
+  HEIGHT: 'height',
+  COLOR: 'color',
+  BACKGROUND: 'background',
+  FLIP_X: 'flipX',
+  FLIP_Y: 'flipY',
+  PROGRESS: 'progress',
+  GLOBAL_ALPHA: 'globalAlpha',
+  dash: 'dash',
+  TEXT: 'text',
+  FONT_SIZE: 'fontSize',
+  TEXT_COLOR: 'textColor',
+  TEXT_BACKGROUND: 'textBackground',
+  FONT_STYLE: 'fontStyle',
+  FONT_WEIGHT: 'fontWeight'
 };
 
 /**
@@ -534,4 +812,21 @@ export const LINE_NAME_ENUM = {
   POLYLINE: 'polyline',
   LINE: 'line',
   MIND: 'mind'
+};
+
+/**
+ * 线条类型枚举
+ * @typedef {Object} DASH_TYPE_ENUM
+ * @property {string} NONE - 无
+ * @property {string} SOLID - 实线
+ * @property {string} SHORT_DASHED - 短虚线
+ * @property {string} LONG_DASHED - 长虚线
+ * @property {string} DASH_DOTTED - 虚点线
+ */
+export const DASH_TYPE_ENUM = {
+  NONE: -1,
+  SOLID: 0,
+  SHORT_DASHED: 1,
+  LONG_DASHED: 2,
+  DASH_DOTTED: 3
 };

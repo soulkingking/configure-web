@@ -42,6 +42,17 @@
                   @change="changeValue('lineWidth')"
                 />
               </t-form-item>
+              <t-form-item label="线条样式">
+                <t-select v-model="material.dash" @change="changeDashValue">
+                  <t-option
+                    v-for="dash in DASH_TYPE"
+                    :value="dash.value"
+                    :label="dash.label"
+                    :key="dash.key"
+                  >
+                  </t-option>
+                </t-select>
+              </t-form-item>
               <t-form-item label="线颜色">
                 <t-color-picker
                   v-model="material.color"
@@ -550,6 +561,7 @@
         </div>
       </t-tab-panel>
     </t-tabs>
+    <!-- 帧动画配置 -->
     <t-drawer
       v-model:visible="animationVisible"
       v-if="animationSelected"
@@ -562,7 +574,7 @@
       :footer="null"
     >
       <div v-if="animationSelected">
-        <t-form :model="animationSelected" label-width="100px" label-align="left">
+        <t-form :model="animationSelected" label-width="80px" label-align="left">
           <t-collapse :default-value="[0]">
             <t-collapse-panel
               :header="'帧' + (index + 1)"
@@ -571,8 +583,13 @@
             >
               <template #headerRightContent>
                 <t-space size="small">
+                  <t-tooltip content="添加帧">
+                    <t-button variant="text" shape="square" @click.stop="handleAddFrame(frame)">
+                      <template #icon><FolderAddIcon /></template
+                    ></t-button>
+                  </t-tooltip>
                   <t-dropdown
-                    :options="attributes"
+                    :options="frameAttributes"
                     @click="(item) => handleAddFrameAttribute(frame, item)"
                   >
                     <t-button variant="text" shape="square">
@@ -591,76 +608,264 @@
                   </t-popconfirm>
                 </t-space>
               </template>
-              <t-form-item label="时长">
-                <t-input-number
-                  v-model="frame.duration"
-                  @change="changeAnimationValue"
-                  align="left"
-                  theme="normal"
-                  min="0"
-                >
-                  <template #suffix><span>ms</span></template>
-                </t-input-number>
-              </t-form-item>
-              <t-form-item label="显示" v-if="hasAttribute(frame, 'visible')">
-                <t-switch v-model="frame.visible" @change="changeAnimationValue"> </t-switch>
-              </t-form-item>
-              <t-form-item label="缩放" v-if="hasAttribute(frame, 'scale')">
-                <t-input-number
-                  v-model="frame.scale"
-                  @change="changeAnimationValue"
-                  align="left"
-                  theme="normal"
-                  min="0"
-                >
-                </t-input-number>
-              </t-form-item>
-              <t-form-item label="线宽度" v-if="hasAttribute(frame, 'lineWidth')">
-                <t-input-number
-                  v-model="frame.lineWidth"
-                  @change="changeAnimationValue"
-                  align="left"
-                  theme="normal"
-                  min="0"
-                >
-                </t-input-number>
-              </t-form-item>
-              <t-form-item label="线颜色" v-if="hasAttribute(frame, 'color')">
-                <t-color-picker
-                  v-model="frame.color"
-                  :show-primary-color-preview="false"
-                  :input-props="{ autoWidth: false }"
-                  class="w-full"
-                  :enableAlpha="true"
-                  :colorModes="['monochrome']"
-                  format="RGBA"
-                  @change="changeAnimationValue"
-                />
-              </t-form-item>
-              <t-form-item label="背景颜色" v-if="hasAttribute(frame, 'background')">
-                <t-color-picker
-                  v-model="frame.background"
-                  :show-primary-color-preview="false"
-                  :input-props="{ autoWidth: false }"
-                  class="w-full"
-                  :enableAlpha="true"
-                  :colorModes="['monochrome']"
-                  format="RGBA"
-                  @change="changeAnimationValue"
-                />
-              </t-form-item>
-              <t-form-item label="旋转" v-if="hasAttribute(frame, 'rotate')">
-                <t-input-number
-                  v-model="frame.rotate"
-                  @change="changeAnimationValue"
-                  align="left"
-                  theme="normal"
-                  min="-360"
-                  max="360"
-                >
-                  <template #suffix><span>°</span></template>
-                </t-input-number>
-              </t-form-item>
+              <template v-for="(value, key) in frame" :key="key">
+                <t-form-item label="时长" v-if="key === 'duration'">
+                  <t-input-number
+                    v-model="frame.duration"
+                    @change="changeAnimationValue"
+                    align="left"
+                    theme="normal"
+                    min="0"
+                    class="w-40"
+                  >
+                    <template #suffix><span>ms</span></template>
+                  </t-input-number>
+                </t-form-item>
+                <t-form-item label="显示" v-if="key === 'visible'">
+                  <div class="w-40">
+                    <t-switch v-model="frame.visible" @change="changeAnimationValue"> </t-switch>
+                  </div>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'visible')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="缩放" v-if="key === 'scale'">
+                  <t-input-number
+                    v-model="frame.scale"
+                    @change="changeAnimationValue"
+                    align="left"
+                    theme="normal"
+                    min="0"
+                    class="w-40"
+                  >
+                  </t-input-number>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'scale')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="线宽度" v-if="key === 'lineWidth'">
+                  <t-input-number
+                    v-model="frame.lineWidth"
+                    @change="changeAnimationValue"
+                    align="left"
+                    theme="normal"
+                    min="0"
+                    class="w-40"
+                  >
+                  </t-input-number>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'lineWidth')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="前景颜色" v-if="key === 'color'">
+                  <t-color-picker
+                    v-model="frame.color"
+                    :show-primary-color-preview="false"
+                    :input-props="{ autoWidth: false }"
+                    class="w-40"
+                    :enableAlpha="true"
+                    :colorModes="['monochrome']"
+                    format="RGBA"
+                    @change="changeAnimationValue"
+                  />
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'color')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="背景颜色" v-if="key === 'background'">
+                  <t-color-picker
+                    v-model="frame.background"
+                    :show-primary-color-preview="false"
+                    :input-props="{ autoWidth: false }"
+                    class="w-40"
+                    :enableAlpha="true"
+                    :colorModes="['monochrome']"
+                    format="RGBA"
+                    @change="changeAnimationValue"
+                  />
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'background')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="旋转" v-if="key === 'rotate'">
+                  <t-input-number
+                    v-model="frame.rotate"
+                    @change="changeAnimationValue"
+                    align="left"
+                    theme="normal"
+                    class="w-40"
+                    min="-360"
+                    max="360"
+                  >
+                    <template #suffix><span>°</span></template>
+                  </t-input-number>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'rotate')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="x位移" v-if="key === 'x'">
+                  <t-input-number
+                    v-model="frame.x"
+                    @change="changeAnimationValue"
+                    align="left"
+                    theme="normal"
+                    class="w-40"
+                  >
+                  </t-input-number>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'x')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="y位移" v-if="key === 'y'">
+                  <t-input-number
+                    v-model="frame.y"
+                    @change="changeAnimationValue"
+                    align="left"
+                    theme="normal"
+                    class="w-40"
+                  >
+                  </t-input-number>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'y')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="水平翻转" v-if="key === 'flipX'">
+                  <div class="w-40">
+                    <t-switch v-model="frame.flipX" @change="changeAnimationValue"> </t-switch>
+                  </div>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'flipX')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="垂直翻转" v-if="key === 'flipY'">
+                  <div class="w-40">
+                    <t-switch v-model="frame.flipY" @change="changeAnimationValue"> </t-switch>
+                  </div>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'flipY')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="进度" v-if="key === 'progress'">
+                  <t-slider
+                    v-model="frame.progress"
+                    :min="0"
+                    :max="1"
+                    :step="0.1"
+                    class="w-40"
+                    @change="changeAnimationValue"
+                  />
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'progress')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+
+                <t-form-item label="透明度" v-if="key === 'globalAlpha'">
+                  <t-slider
+                    v-model="frame.globalAlpha"
+                    :min="0"
+                    :max="1"
+                    :step="0.1"
+                    class="w-40"
+                    @change="changeAnimationValue"
+                  />
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'globalAlpha')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+
+                <t-form-item label="文字" v-if="key === 'text'">
+                  <t-input v-model="frame.text" @change="changeAnimationValue" class="w-40">
+                  </t-input>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'text')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="文字大小" v-if="key === 'fontSize'">
+                  <t-input-number
+                    v-model="frame.fontSize"
+                    @change="changeAnimationValue"
+                    align="left"
+                    theme="normal"
+                    min="0"
+                    class="w-40"
+                  >
+                    <template #suffix><span>px</span></template>
+                  </t-input-number>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'fontSize')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+              </template>
             </t-collapse-panel>
           </t-collapse>
         </t-form>
@@ -669,8 +874,8 @@
   </t-form>
 </template>
 
-<script setup>
-import { ref, inject, watchEffect } from 'vue';
+<script setup lang="jsx">
+import { ref, inject, watchEffect, computed } from 'vue';
 import {
   AddIcon,
   ArrowRightIcon,
@@ -679,7 +884,9 @@ import {
   PlayCircleIcon,
   StopCircleIcon,
   EditIcon,
-  FileAddIcon
+  FileAddIcon,
+  Animation1Icon,
+  FolderAddIcon
 } from 'tdesign-icons-vue-next';
 import { s8, deepClone } from '@meta2d/core';
 import {
@@ -687,16 +894,19 @@ import {
   LOGICAL_RELATIONSHIP,
   COMPARISON,
   ATTRIBUTE,
+  FRAME_ATTRIBUTE,
   EVENT_ACTION,
   TARGET_TYPE,
   VALUE_TYPE,
   CONDITION_TYPE,
+  DASH_TYPE,
   LOGICAL_RELATIONSHIP_ENUM,
   VALUE_TYPE_ENUM,
   EVENT_ACTION_ENUM,
   COMPARISON_ENUM,
   CONDITION_TYPE_ENUM,
-  TARGET_TYPE_ENUM
+  TARGET_TYPE_ENUM,
+  DASH_TYPE_ENUM
 } from '@/common/configure-common';
 import { handleTree } from '@/util';
 import { useSelection } from '@/hooks/useSelection';
@@ -714,107 +924,13 @@ const animationVisible = ref(false);
 const animationSelected = ref(null);
 // 图片
 const images = ref([]);
-// 属性
-const attributes = ref([
-  {
-    content: '显示',
-    label: '显示',
-    value: 'visible',
-    text: 'visible',
-    key: 'visible',
-    defaultValue: true
-  },
-  { content: '缩放', label: '缩放', value: 'scale', text: 'scale', key: 'scale' },
-  { content: '旋转', label: '旋转', value: 'rotate', text: 'rotate', key: 'rotate' },
-  { content: 'x位移', label: 'x位移', value: 'x', text: 'x', key: 'x' },
-  { content: 'y位移', label: 'y位移', value: 'y', text: 'y', key: 'y' },
-  { content: '前景颜色', label: '前景颜色', value: 'color', text: 'color', key: 'color' },
-  {
-    content: '背景颜色',
-    label: '背景颜色',
-    value: 'background',
-    text: 'background',
-    key: 'background'
-  },
-  {
-    content: '文字',
-    label: '文字',
-    value: 'text',
-    text: 'text',
-    key: 'text'
-  },
-  {
-    content: '水平翻转',
-    label: '水平翻转',
-    value: 'flipX',
-    text: 'flipX',
-    key: 'flipX'
-  },
-  {
-    content: '垂直翻转',
-    label: '垂直翻转',
-    value: 'flipY',
-    text: 'flipY',
-    key: 'flipY'
-  },
-  {
-    content: '进度',
-    label: '进度',
-    value: 'progress',
-    text: 'progress',
-    key: 'progress'
-  },
-  {
-    content: '透明度',
-    label: '透明度',
-    value: 'globalAlpha',
-    text: 'globalAlpha',
-    key: 'globalAlpha'
-  },
-  {
-    content: '字体大小',
-    label: '字体大小',
-    value: 'fontSize',
-    text: 'fontSize',
-    key: 'fontSize'
-  },
-  {
-    content: '文字颜色',
-    label: '文字颜色',
-    value: 'textColor',
-    text: 'textColor',
-    key: 'textColor'
-  },
-  {
-    content: '文字背景',
-    label: '文字背景',
-    value: 'textBackground',
-    text: 'textBackground',
-    key: 'textBackground'
-  },
-  {
-    content: '文字背景',
-    label: '文字背景',
-    value: 'textBackground',
-    text: 'textBackground',
-    key: 'textBackground'
-  },
-  {
-    content: '文字倾斜',
-    label: '文字倾斜',
-    value: 'fontStyle',
-    text: 'fontStyle',
-    key: 'fontStyle'
-  },
-  {
-    content: '文字加粗',
-    label: '文字加粗',
-    value: 'fontWeight',
-    text: 'fontWeight',
-    key: 'fontWeight'
-  }
-]);
 
+// 帧属性
+const frameAttributes = computed(() => {
+  return FRAME_ATTRIBUTE.map((item) => ({ ...item, prefixIcon: () => <Animation1Icon /> }));
+});
+
+// 是否拥有属性
 const hasAttribute = (attribute = {}, key) => {
   return key in attribute;
 };
@@ -840,6 +956,51 @@ const active = ref('basic');
 const changeValue = (prop) => {
   const v = { id: material.value.id };
   v[prop] = material.value[prop];
+  meta2d.value.setValue(v, { render: true });
+};
+
+// 更新边框属性
+const changeDashValue = (value) => {
+  const dash = DASH_TYPE.find((item) => item.value === value);
+  const v = { id: material.value.id };
+  v.dash = dash.value;
+  switch (dash.value) {
+    case DASH_TYPE_ENUM.NONE:
+      v.lineWidth = 0;
+      v.lineDash = undefined;
+      break;
+
+    case DASH_TYPE_ENUM.SOLID:
+      if (material.value.lineWidth == 0) {
+        v.lineWidth = 1;
+      }
+      v.lineDash = undefined;
+      break;
+
+    case DASH_TYPE_ENUM.SHORT_DASHED:
+      if (material.value.lineWidth == 0) {
+        v.lineWidth = 1;
+      }
+      v.lineDash = dash.lineDash;
+      break;
+
+    case DASH_TYPE_ENUM.LONG_DASHED:
+      if (material.value.lineWidth == 0) {
+        v.lineWidth = 1;
+      }
+      v.lineDash = dash.lineDash;
+      break;
+
+    case DASH_TYPE_ENUM.DASH_DOTTED:
+      if (material.value.lineWidth == 0) {
+        v.lineWidth = 1;
+      }
+      v.lineDash = dash.lineDash;
+      break;
+
+    default:
+      break;
+  }
   meta2d.value.setValue(v, { render: true });
 };
 
@@ -903,7 +1064,7 @@ const handleDeleteAction = (event, action) => {
 
 // 动作配置
 const handleActionValueChange = (value, context) => {
-  if (context) {
+  if (context && context.node.data) {
     const node = context.node.data;
     animationsSelected.value = deepClone(node.animations || []).map((item) => ({
       ...item,
@@ -956,8 +1117,8 @@ const handleAddAnimation = () => {
       temType: 'id',
       animate: '闪烁',
       frames: [
-        { duration: 300, scale: 0.5, lineWidth: 1, color: 'rgba(7, 141, 92, 1)', frameId: s8() },
-        { duration: 300, scale: 1, lineWidth: 20, color: 'rgba(7, 141, 92, 0.3)', frameId: s8() }
+        { duration: 300, visible: true, frameId: s8() },
+        { duration: 300, visible: false, frameId: s8() }
       ]
     }
   ];
@@ -1008,6 +1169,13 @@ const changeAnimationValue = () => {
   changeValue('animations');
 };
 
+// 添加帧动画
+const handleAddFrame = () => {
+  const frames = animationSelected.value.frames || [];
+  animationSelected.value.frames = [...frames, { duration: 300, frameId: s8() }];
+  changeAnimationValue();
+};
+
 // 删除帧动画
 const handleDeleteFrame = (frame) => {
   const frames = animationSelected.value.frames || [];
@@ -1017,7 +1185,14 @@ const handleDeleteFrame = (frame) => {
 
 // 添加帧属性
 const handleAddFrameAttribute = (frame, item) => {
-  frame[item.value] = item.defaultValue ? item.defaultValue : undefined;
+  if (!hasAttribute(frame, item.value)) {
+    frame[item.value] = item.defaultValue ? item.defaultValue : undefined;
+  }
+};
+
+// 删除属性;
+const handleDeleteFrameAttribute = (frame, key) => {
+  delete frame[key];
 };
 </script>
 <style scoped>

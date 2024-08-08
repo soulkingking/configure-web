@@ -587,6 +587,46 @@ export const DASH_TYPE = [
   }
 ];
 
+// 对齐方式
+export const ALGIN_TYPE = [
+  {
+    label: '左对齐',
+    value: 'left',
+    key: 'left',
+    icon: 't-icon-shuipingzuoduiqi'
+  },
+  {
+    label: '水平居中对齐',
+    value: 'center',
+    key: 'center',
+    icon: 't-icon-shuipingjuzhongduiqi'
+  },
+  {
+    label: '右对齐',
+    value: 'right',
+    key: 'right',
+    icon: 't-icon-shuipingyouduiqi'
+  },
+  {
+    label: '顶部对齐',
+    value: 'top',
+    key: 'top',
+    icon: 't-icon-chuizhidingduiqi'
+  },
+  {
+    label: '垂直居中对齐',
+    value: 'middle',
+    key: 'middle',
+    icon: 't-icon-chuizhijuzhongduiqi'
+  },
+  {
+    label: '底部对齐',
+    value: 'bottom',
+    key: 'bottom',
+    icon: 't-icon-chuizhididuiqi'
+  }
+];
+
 /**
  * @typedef {Object} EVENT_NAME_ENUM
  * @property {string} CLICK - 点击事件
@@ -829,4 +869,22 @@ export const DASH_TYPE_ENUM = {
   SHORT_DASHED: 1,
   LONG_DASHED: 2,
   DASH_DOTTED: 3
+};
+
+/**
+ * @typedef {Object} ALGIN_TYPE_ENUM
+ * @property {string} LEFT - 左对齐
+ * @property {string} CENTER - 水平居中对齐
+ * @property {string} RIGHT - 右对齐
+ * @property {string} TOP - 顶部对齐
+ * @property {string} MIDDLE - 垂直居中对齐
+ * @property {string} BOTTOM - 底部对齐
+ */
+export const ALGIN_TYPE_ENUM = {
+  LEFT: 'left',
+  CENTER: 'center',
+  RIGHT: 'right',
+  TOP: 'top',
+  MIDDLE: 'middle',
+  BOTTOM: 'bottom'
 };

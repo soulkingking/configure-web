@@ -10,12 +10,23 @@
   <t-form :model="material" label-width="100px" v-if="material" label-align="left">
     <t-tabs size="medium" tabPosition="top" v-model="active">
       <t-tab-panel label="外观" value="basic">
-        <div class="p0">
+        <div class="p0 node-props-container overflow-auto narrow-scrollbar">
           <t-collapse :default-value="[0]">
             <t-collapse-panel header="基础信息">
               <t-form-item label="组件名称" name="name">
                 <t-input v-model="material.name" @change="changeValue('name')" />
               </t-form-item>
+            </t-collapse-panel>
+            <t-collapse-panel header="大屏对齐">
+              <t-space :size="8" break-line align="center">
+                <t-tooltip :content="item.label" v-for="item in ALGIN_TYPE" :key="item.key">
+                  <t-button variant="text" shape="square" @click.stop="alignNodesV(item)">
+                    <template #icon>
+                      <IconFont :name="item.icon" :url="[]"></IconFont>
+                    </template>
+                  </t-button>
+                </t-tooltip>
+              </t-space>
             </t-collapse-panel>
             <t-collapse-panel header="图片" v-if="material.name == 'image'">
               <t-form-item label-width="0">
@@ -34,7 +45,75 @@
                 </t-upload>
               </t-form-item>
             </t-collapse-panel>
-            <t-collapse-panel header="样式">
+            <t-collapse-panel header="外观">
+              <t-form-item label-width="0">
+                <t-row :gutter="8">
+                  <t-col :span="4">
+                    <t-input-number
+                      v-model="rect.x"
+                      theme="normal"
+                      class="w-22"
+                      @change="changeRect('x')"
+                      label="X"
+                    />
+                  </t-col>
+                  <t-col :span="4">
+                    <t-input-number
+                      v-model="rect.y"
+                      theme="normal"
+                      class="w-22"
+                      @change="changeRect('y')"
+                      label="Y"
+                    />
+                  </t-col>
+                  <t-col :span="4">
+                    <t-input-number
+                      v-model="material.rotate"
+                      theme="normal"
+                      class="w-22"
+                      min="0"
+                      @change="changeValue('rotate')"
+                      label="Y"
+                    >
+                      <template #label>
+                        <RotateIcon></RotateIcon>
+                      </template>
+                    </t-input-number>
+                  </t-col>
+                </t-row> </t-form-item
+              ><t-form-item label-width="0">
+                <t-row :gutter="8">
+                  <t-col :span="4">
+                    <t-input-number
+                      v-model="rect.width"
+                      theme="normal"
+                      class="w-22"
+                      @change="changeRect('width')"
+                      label="宽"
+                    />
+                  </t-col>
+                  <t-col :span="4">
+                    <t-input-number
+                      v-model="rect.height"
+                      theme="normal"
+                      class="w-22"
+                      @change="changeRect('height')"
+                      label="高"
+                    />
+                  </t-col>
+                  <t-col :span="4">
+                    <t-input-number
+                      v-model="material.borderRadius"
+                      theme="normal"
+                      class="w-22"
+                      min="0"
+                      @change="changeValue('borderRadius')"
+                    >
+                      <template #label> <Fullscreen1Icon></Fullscreen1Icon> </template
+                    ></t-input-number>
+                  </t-col>
+                </t-row>
+              </t-form-item>
               <t-form-item label="线宽度" name="lineWidth">
                 <t-input-number
                   v-model="material.lineWidth"
@@ -63,13 +142,6 @@
                   :colorModes="['monochrome']"
                   format="RGBA"
                   @change="changeValue('color')"
-                />
-              </t-form-item>
-              <t-form-item label="圆角" name="borderRadius">
-                <t-input-number
-                  :min="0"
-                  v-model="material.borderRadius"
-                  @change="changeValue('borderRadius')"
                 />
               </t-form-item>
               <t-form-item label="背景颜色">
@@ -246,7 +318,7 @@
       <t-tab-panel label="数据" value="data"> <div class="p0"></div> </t-tab-panel>
       <t-tab-panel label="状态" value="event"> <div class="p0"></div> </t-tab-panel>
       <t-tab-panel label="交互" value="structure">
-        <div class="p0 max-h-4xl overflow-auto">
+        <div class="p0 node-props-container overflow-auto narrow-scrollbar">
           <!-- 事件列表 -->
           <t-collapse :default-value="[0]" v-if="material.events">
             <t-collapse-panel
@@ -875,7 +947,7 @@
 </template>
 
 <script setup lang="jsx">
-import { ref, inject, watchEffect, computed } from 'vue';
+import { ref, inject, watchEffect, computed, watch, onMounted, onUnmounted } from 'vue';
 import {
   AddIcon,
   ArrowRightIcon,
@@ -886,7 +958,10 @@ import {
   EditIcon,
   FileAddIcon,
   Animation1Icon,
-  FolderAddIcon
+  FolderAddIcon,
+  RotateIcon,
+  Fullscreen1Icon,
+  IconFont
 } from 'tdesign-icons-vue-next';
 import { s8, deepClone } from '@meta2d/core';
 import {
@@ -900,6 +975,7 @@ import {
   VALUE_TYPE,
   CONDITION_TYPE,
   DASH_TYPE,
+  ALGIN_TYPE,
   LOGICAL_RELATIONSHIP_ENUM,
   VALUE_TYPE_ENUM,
   EVENT_ACTION_ENUM,
@@ -914,6 +990,8 @@ const meta2d = inject('meta2d');
 const { selections } = useSelection();
 // 选中的图形
 const material = ref(null);
+// 位置数据
+const rect = ref();
 // 结构
 const structures = ref([]);
 // 动画
@@ -938,24 +1016,55 @@ const hasAttribute = (attribute = {}, key) => {
 watchEffect(() => {
   structures.value = handleTree(deepClone(meta2d.value.store.data.pens));
 });
-// 更新图形
-watchEffect(() => {
+
+// 获取图元
+const getPen = () => {
   material.value = selections.pen;
-  if (material.value && !material.value.verticalProgress) {
+  if (!material.value) {
+    return;
+  }
+  rect.value = meta2d.value.getPenRect(material.value);
+  if (material.value.globalAlpha == undefined) {
+    material.value.globalAlpha = 1;
+  }
+  if (!material.value.verticalProgress) {
     material.value.verticalProgress = false;
   }
-  if (selections.pen && selections.pen.name == 'image') {
-    images.value = [{ url: selections.pen.image }];
+  if (material.value.name == 'image') {
+    images.value = [{ url: material.value.image }];
   } else {
     images.value = [];
   }
+};
+// 更新图形
+const watcher = watch(() => selections.pen.id, getPen);
+
+onMounted(() => {
+  getPen();
 });
+
+onUnmounted(() => {
+  watcher();
+});
+
+// 默认激活
 const active = ref('basic');
+
+// 大屏对齐
+const alignNodesV = (item) => {
+  meta2d.value.alignNodesV(item.value, meta2d.value.store.active);
+};
 
 // 更新属性
 const changeValue = (prop) => {
   const v = { id: material.value.id };
   v[prop] = material.value[prop];
+  meta2d.value.setValue(v, { render: true });
+};
+
+const changeRect = (prop) => {
+  const v = { id: material.value.id };
+  v[prop] = rect.value[prop];
   meta2d.value.setValue(v, { render: true });
 };
 
@@ -1196,6 +1305,9 @@ const handleDeleteFrameAttribute = (frame, key) => {
 };
 </script>
 <style scoped>
+.node-props-container {
+  max-height: calc(100vh - 170px);
+}
 .event-btn {
   padding: var(--td-comp-paddingTB-m) var(--td-comp-paddingLR-l);
 }

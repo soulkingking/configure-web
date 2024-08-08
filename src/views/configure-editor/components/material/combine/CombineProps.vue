@@ -39,7 +39,7 @@
                     </template>
                   </t-button>
                 </t-tooltip>
-                <t-tooltip :content="垂直等距">
+                <t-tooltip content="垂直等距">
                   <t-button variant="text" shape="square" @click.stop="spaceBetweenColumn">
                     <template #icon>
                       <IconFont name="t-icon-chuizhidengjufenbu" :url="[]"></IconFont>

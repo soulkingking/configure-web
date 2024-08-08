@@ -28,12 +28,18 @@
                 <ChevronDownIcon></ChevronDownIcon></template
             ></t-button>
             <t-dropdown-menu>
-              <t-dropdown-item @click="handleAdd">
+              <t-dropdown-item @click="handleAdd" divider>
                 <template #prefixIcon><FileAddIcon></FileAddIcon></template>新建
               </t-dropdown-item>
               <t-dropdown-item @click="handleSave">
                 <template #prefixIcon><SaveIcon></SaveIcon></template>保存
               </t-dropdown-item>
+              <t-dropdown-item @click="handleDownloadJson">
+                <template #prefixIcon><FileDownloadIcon /></template>下载JSON文件
+              </t-dropdown-item>
+              <!-- <t-dropdown-item @click="handleDownloadPng">
+                <template #prefixIcon><FileDownloadIcon /></template>下载为PNG
+              </t-dropdown-item> -->
             </t-dropdown-menu>
           </t-dropdown>
         </t-space>
@@ -136,16 +142,17 @@ import {
   LockOnIcon,
   LockOffIcon,
   SunnyIcon,
-  MoonIcon
+  MoonIcon,
+  FileDownloadIcon
 } from 'tdesign-icons-vue-next';
 import MaterialView from './layout/material-view/MaterialView.vue';
 import PropsView from './layout/props-view/PropsView.vue';
 import ConfigureEditorView from './components/configure-editor-view/ConfigureEditorView.vue';
 import { useConfigureEditorStore } from '@/stores/configure-editor';
-import { useDebounceFn, useTimeoutFn } from '@vueuse/core';
+import { useDebounceFn, useTimeoutFn, useFileSystemAccess } from '@vueuse/core';
 import Config from '@/config/index';
 import { LINE_NAME, LINE_NAME_ENUM } from '@/common/configure-common';
-import { LockState } from '@meta2d/core';
+import { LockState, s8 } from '@meta2d/core';
 import { storeToRefs } from 'pinia';
 import { useTheme } from '@/hooks/useTheme';
 import { handleTree } from '@/util';
@@ -162,6 +169,20 @@ const { dataSheets } = storeToRefs(configureEditorStore);
 const { isDark, toggleDark } = useTheme();
 
 const lineName = ref(LINE_NAME_ENUM.CURVE);
+// 下载JSON文件
+const dataType = ref('Blob');
+const { saveAs: downloadJson, data } = useFileSystemAccess({
+  dataType,
+  types: [
+    {
+      description: 'text',
+      accept: {
+        'text/plain': ['.json']
+      }
+    }
+  ],
+  excludeAcceptAllOption: true
+});
 
 // 新建
 const handleAdd = useDebounceFn(
@@ -186,6 +207,24 @@ const handleSave = useDebounceFn(
   Config.settingConfig.debounceTime,
   false
 );
+
+// 下载JSON文件
+const handleDownloadJson = useDebounceFn(
+  () => {
+    data.value = JSON.stringify(meta2d.value.data());
+    downloadJson();
+  },
+  Config.settingConfig.debounceTime,
+  false
+);
+// 下载PNG文件
+const handleDownloadPng = () => {
+  let name = s8();
+  if (name) {
+    name += '.png';
+  }
+  meta2d.value.downloadPng(name);
+};
 
 // 更新结构
 const handleUpdateStructure = () => {
@@ -214,9 +253,6 @@ onMounted(() => {
     meta2d.value.on('translatePens', handleAutoSave);
     meta2d.value.on('autoSave', handleAutoSave);
     meta2d.value.on('updateStructure', handleUpdateStructure);
-    meta2d.value.on('test', (e) => {
-      console.log(e);
-    });
   });
 });
 

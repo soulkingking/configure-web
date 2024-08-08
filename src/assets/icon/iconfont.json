@@ -1,0 +1,107 @@
+{
+  "id": "4647583",
+  "name": "组态",
+  "font_family": "t",
+  "css_prefix_text": "t-icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "12550438",
+      "name": "水平左对齐",
+      "font_class": "shuipingzuoduiqi",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "12550439",
+      "name": "垂直居中对齐",
+      "font_class": "chuizhijuzhongduiqi",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "12550440",
+      "name": "水平居中对齐",
+      "font_class": "shuipingjuzhongduiqi",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "12550441",
+      "name": "垂直底对齐",
+      "font_class": "chuizhididuiqi",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "12550442",
+      "name": "水平右对齐",
+      "font_class": "shuipingyouduiqi",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "12550443",
+      "name": "水平等距分布",
+      "font_class": "shuipingdengjufenbu",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "12550444",
+      "name": "垂直顶对齐",
+      "font_class": "chuizhidingduiqi",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "12550445",
+      "name": "垂直等距分布",
+      "font_class": "chuizhidengjufenbu",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "12550473",
+      "name": "置于顶层",
+      "font_class": "zhiyudingceng",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "12550474",
+      "name": "置于底层",
+      "font_class": "zhiyudiceng",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "12550475",
+      "name": "取消组合",
+      "font_class": "quxiaozuhe",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "12550477",
+      "name": "水平翻转",
+      "font_class": "shuipingfanzhuan",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "12550479",
+      "name": "组合",
+      "font_class": "zuhe",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "12550480",
+      "name": "垂直翻转",
+      "font_class": "chuizhifanzhuan",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    }
+  ]
+}

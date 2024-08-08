@@ -19,7 +19,9 @@
     <NodeProps v-else></NodeProps>
   </template>
   <!-- 多选属性面板 -->
-  <template v-else-if="selections.mode === SELECTION_MODE_ENUM.COMBINE"> </template>
+  <template v-else-if="selections.mode === SELECTION_MODE_ENUM.COMBINE">
+    <CombineProps></CombineProps>
+  </template>
   <!-- 其他 -->
   <template v-else> </template>
 </template>
@@ -29,6 +31,7 @@ import { PenType } from '@meta2d/core';
 import FileProps from '../../components/material/file/FileProps.vue';
 import LineProps from '../../components/material/line/LineProps.vue';
 import NodeProps from '../../components/material/node/NodeProps.vue';
+import CombineProps from '../../components/material/combine/CombineProps.vue';
 import { SELECTION_MODE_ENUM } from '@/common/configure-common';
 import { useSelection } from '@/hooks/useSelection';
 const { selections } = useSelection();

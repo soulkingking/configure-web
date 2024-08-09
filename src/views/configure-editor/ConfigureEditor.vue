@@ -237,18 +237,33 @@ const handleUpdateStructure = () => {
 const { start: handleAutoSave } = useTimeoutFn(() => {
   if (meta2d.value) {
     setDataSheets(meta2d.value.data());
-    handleUpdateStructure();
   }
 }, Config.settingConfig.timeoutTime);
 
 onMounted(() => {
   nextTick(() => {
+    handleUpdateStructure();
     meta2d.value.on('scale', handleAutoSave);
-    meta2d.value.on('add', handleAutoSave);
-    meta2d.value.on('opened', handleAutoSave);
-    meta2d.value.on('undo', handleAutoSave);
-    meta2d.value.on('redo', handleAutoSave);
-    meta2d.value.on('delete', handleAutoSave);
+    meta2d.value.on('add', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
+    meta2d.value.on('opened', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
+    meta2d.value.on('undo', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
+    meta2d.value.on('redo', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
+    meta2d.value.on('delete', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
     meta2d.value.on('rotatePens', handleAutoSave);
     meta2d.value.on('translatePens', handleAutoSave);
     meta2d.value.on('autoSave', handleAutoSave);

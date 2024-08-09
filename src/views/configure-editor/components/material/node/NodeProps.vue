@@ -13,8 +13,11 @@
         <div class="p0 node-props-container overflow-auto narrow-scrollbar">
           <t-collapse :default-value="[0]">
             <t-collapse-panel header="基础信息">
-              <t-form-item label="组件名称" name="name">
-                <t-input v-model="material.name" @change="changeValue('name')" />
+              <t-form-item label="ID">
+                <t-input v-model="material.id" readonly borderless />
+              </t-form-item>
+              <t-form-item label="名称">
+                <t-input v-model="material.name" readonly borderless />
               </t-form-item>
             </t-collapse-panel>
             <t-collapse-panel header="大屏对齐">
@@ -27,23 +30,6 @@
                   </t-button>
                 </t-tooltip>
               </t-space>
-            </t-collapse-panel>
-            <t-collapse-panel header="图片" v-if="material.name == 'image'">
-              <t-form-item label-width="0">
-                <t-upload
-                  theme="image"
-                  accept="image/*"
-                  v-model="images"
-                  class="w-full"
-                  :requestMethod="uploadImage"
-                  :show-image-file-name="false"
-                  @success="handleUploadSuccess"
-                >
-                  <!-- <template #fileListDisplay="{ files }">
-                    <t-image v-for="(file, index) in files" :key="index" :src="file.url"></t-image>
-                  </template> -->
-                </t-upload>
-              </t-form-item>
             </t-collapse-panel>
             <t-collapse-panel header="外观">
               <t-form-item label-width="0">
@@ -80,8 +66,9 @@
                       </template>
                     </t-input-number>
                   </t-col>
-                </t-row> </t-form-item
-              ><t-form-item label-width="0">
+                </t-row>
+              </t-form-item>
+              <t-form-item label-width="0">
                 <t-row :gutter="8">
                   <t-col :span="4">
                     <t-input-number
@@ -114,13 +101,6 @@
                   </t-col>
                 </t-row>
               </t-form-item>
-              <t-form-item label="线宽度" name="lineWidth">
-                <t-input-number
-                  v-model="material.lineWidth"
-                  :min="0"
-                  @change="changeValue('lineWidth')"
-                />
-              </t-form-item>
               <t-form-item label="线条样式">
                 <t-select v-model="material.dash" @change="changeDashValue">
                   <t-option
@@ -132,6 +112,14 @@
                   </t-option>
                 </t-select>
               </t-form-item>
+              <t-form-item label="线宽度" name="lineWidth">
+                <t-input-number
+                  v-model="material.lineWidth"
+                  :min="0"
+                  @change="changeValue('lineWidth')"
+                />
+              </t-form-item>
+
               <t-form-item label="线颜色">
                 <t-color-picker
                   v-model="material.color"
@@ -156,6 +144,59 @@
                   @change="changeValue('background')"
                 />
               </t-form-item>
+              <t-form-item label="阴影">
+                <t-checkbox v-model="material.shadow" @change="changeShadowValue"></t-checkbox>
+                <t-color-picker
+                  v-if="material.shadow"
+                  v-model="material.shadowColor"
+                  :show-primary-color-preview="false"
+                  :input-props="{ autoWidth: false }"
+                  class="w-40"
+                  :enableAlpha="true"
+                  :colorModes="['monochrome']"
+                  format="RGBA"
+                  @change="changeValue('shadowColor')"
+                />
+              </t-form-item>
+              <t-form-item label-width="0" v-if="material.shadow">
+                <t-row :gutter="8">
+                  <t-col :span="4"
+                    ><t-input-number
+                      v-model="material.shadowOffsetX"
+                      @change="changeValue('shadowOffsetX')"
+                      theme="normal"
+                      class="w-22"
+                      label="X"
+                  /></t-col>
+                  <t-col :span="4"
+                    ><t-input-number
+                      v-model="material.shadowOffsetY"
+                      @change="changeValue('shadowOffsetY')"
+                      theme="normal"
+                      label="Y"
+                      class="w-22"
+                  /></t-col>
+                  <t-col :span="4">
+                    <t-input-number
+                      v-model="material.shadowBlur"
+                      label="模糊"
+                      theme="normal"
+                      class="w-22"
+                      @change="changeValue('shadowBlur')"
+                    />
+                  </t-col>
+                </t-row>
+              </t-form-item>
+              <t-form-item label="透明度">
+                <t-slider
+                  v-model="material.globalAlpha"
+                  :min="0"
+                  :max="1"
+                  :step="0.1"
+                  @change="changeValue('globalAlpha')"
+                />
+              </t-form-item>
+
               <t-form-item
                 label="状态"
                 name="showChild"
@@ -197,6 +238,23 @@
                   format="RGBA"
                   @change="changeValue('textColor')"
                 />
+              </t-form-item>
+            </t-collapse-panel>
+            <t-collapse-panel header="图片" v-if="material.name == 'image'">
+              <t-form-item label-width="0">
+                <t-upload
+                  theme="image"
+                  accept="image/*"
+                  v-model="images"
+                  class="w-full"
+                  :requestMethod="uploadImage"
+                  :show-image-file-name="false"
+                  @success="handleUploadSuccess"
+                >
+                  <!-- <template #fileListDisplay="{ files }">
+                    <t-image v-for="(file, index) in files" :key="index" :src="file.url"></t-image>
+                  </template> -->
+                </t-upload>
               </t-form-item>
             </t-collapse-panel>
             <t-collapse-panel header="进度">
@@ -243,7 +301,7 @@
         </div>
       </t-tab-panel>
       <t-tab-panel label="动效" value="animation">
-        <div class="p0">
+        <div class="p0 node-props-container overflow-auto narrow-scrollbar">
           <t-collapse :default-value="[0]">
             <t-collapse-panel
               v-for="(animation, index) in material.animations"
@@ -315,8 +373,12 @@
           </div>
         </div>
       </t-tab-panel>
-      <t-tab-panel label="数据" value="data"> <div class="p0"></div> </t-tab-panel>
-      <t-tab-panel label="状态" value="event"> <div class="p0"></div> </t-tab-panel>
+      <t-tab-panel label="数据" value="data">
+        <div class="p0 node-props-container overflow-auto narrow-scrollbar"></div>
+      </t-tab-panel>
+      <t-tab-panel label="状态" value="event">
+        <div class="p0 node-props-container overflow-auto narrow-scrollbar"></div>
+      </t-tab-panel>
       <t-tab-panel label="交互" value="structure">
         <div class="p0 node-props-container overflow-auto narrow-scrollbar">
           <!-- 事件列表 -->
@@ -937,6 +999,87 @@
                       <template #icon><CloseIcon /></template></t-button
                   ></template>
                 </t-form-item>
+                <t-form-item label="阴影" v-if="key === 'shadow'">
+                  <div class="w-40">
+                    <t-switch v-model="frame.shadow" @change="changeAnimationValue"></t-switch>
+                  </div>
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'shadow')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="阴影颜色" v-if="key === 'shadowColor'">
+                  <t-color-picker
+                    v-model="frame.shadowColor"
+                    :show-primary-color-preview="false"
+                    :input-props="{ autoWidth: false }"
+                    class="w-40"
+                    :enableAlpha="true"
+                    :colorModes="['monochrome']"
+                    format="RGBA"
+                    @change="changeAnimationValue"
+                  />
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'shadowColor')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="阴影X偏移" v-if="key === 'shadowOffsetX'">
+                  <t-input-number
+                    v-model="frame.shadowOffsetX"
+                    @change="changeAnimationValue"
+                    theme="normal"
+                    class="w-40"
+                  />
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'shadowOffsetX')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="阴影Y偏移" v-if="key === 'shadowOffsetY'">
+                  <t-input-number
+                    v-model="frame.shadowOffsetY"
+                    @change="changeAnimationValue"
+                    theme="normal"
+                    class="w-40"
+                  />
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'shadowOffsetY')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
+                <t-form-item label="阴影模糊" v-if="key === 'shadowBlur'">
+                  <t-input-number
+                    v-model="frame.shadowBlur"
+                    @change="changeAnimationValue"
+                    theme="normal"
+                    class="w-40"
+                  />
+                  <template #statusIcon
+                    ><t-button
+                      variant="text"
+                      shape="square"
+                      @click.stop="handleDeleteFrameAttribute(frame, 'shadowBlur')"
+                    >
+                      <template #icon><CloseIcon /></template></t-button
+                  ></template>
+                </t-form-item>
               </template>
             </t-collapse-panel>
           </t-collapse>
@@ -1062,6 +1205,7 @@ const changeValue = (prop) => {
   meta2d.value.setValue(v, { render: true });
 };
 
+// 更新坐标
 const changeRect = (prop) => {
   const v = { id: material.value.id };
   v[prop] = rect.value[prop];
@@ -1109,6 +1253,19 @@ const changeDashValue = (value) => {
 
     default:
       break;
+  }
+  meta2d.value.setValue(v, { render: true });
+};
+
+// 更新阴影
+const changeShadowValue = () => {
+  const v = { id: material.value.id };
+  v.shadow = material.value.shadow;
+  if (!material.value.shadow) {
+    v.shadowColor = undefined;
+    v.shadowOffsetX = 0;
+    v.shadowOffsetY = 0;
+    v.shadowBlur = 0;
   }
   meta2d.value.setValue(v, { render: true });
 };

@@ -4,8 +4,8 @@
   </div>
   <t-tabs tabPosition="top" v-model="active">
     <t-tab-panel label="系统组件" value="basic">
-      <div class="p2">
-        <t-collapse expand-icon-placement="right" :borderless="true">
+      <div class="p0 node-props-container overflow-auto narrow-scrollbar">
+        <t-collapse expand-icon-placement="right" :borderless="true" default-expand-all>
           <t-collapse-panel
             :header="materialIcon.name"
             v-for="materialIcon in materialIcons"
@@ -32,10 +32,10 @@
       </div>
     </t-tab-panel>
     <t-tab-panel label="我的组件" value="network">
-      <div class="p2"></div>
+      <div class="p0 node-props-container overflow-auto narrow-scrollbar"></div>
     </t-tab-panel>
     <t-tab-panel label="结构" value="template">
-      <div class="p2">
+      <div class="p0 node-props-container overflow-auto narrow-scrollbar">
         <t-tree
           activable
           :data="structures"
@@ -113,10 +113,10 @@ const onDragstart = (e, pen) => {
 // 激活
 const handleActived = () => {
   if (meta2d.value) {
-    let pens = deepClone(meta2d.value.store.data.pens) || [];
+    let pens = meta2d.value.store.data.pens || [];
     let activedPens = pens.filter((item) => actived.value.includes(item.id));
     select(activedPens);
-    // meta2d.value.active(activedPens);
+    meta2d.value.active(activedPens);
   }
 };
 
@@ -139,6 +139,9 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.node-props-container {
+  max-height: calc(100vh - 170px);
+}
 :deep(.t-collapse-panel__wrapper .t-collapse-panel__content) {
   padding: var(--td-comp-paddingTB-l) var(--td-comp-paddingLR-l);
 }

@@ -267,6 +267,46 @@ export const ATTRIBUTE = [
     text: 'fontWeight',
     key: 'fontWeight',
     defaultValue: 'normal'
+  },
+  {
+    content: '阴影',
+    label: '阴影',
+    value: 'shadow',
+    text: 'shadow',
+    key: 'shadow',
+    defaultValue: false
+  },
+  {
+    content: '阴影X偏移',
+    label: '阴影X偏移',
+    value: 'shadowOffsetX',
+    text: 'shadowOffsetX',
+    key: 'shadowOffsetX',
+    defaultValue: 0
+  },
+  {
+    content: '阴影Y偏移',
+    label: '阴影Y偏移',
+    value: 'shadowOffsetY',
+    text: 'shadowOffsetY',
+    key: 'shadowOffsetY',
+    defaultValue: 0
+  },
+  {
+    content: '阴影模糊',
+    label: '阴影模糊',
+    value: 'shadowBlur',
+    text: 'shadowBlur',
+    key: 'shadowBlur',
+    defaultValue: 0
+  },
+  {
+    content: '阴影颜色',
+    label: '阴影颜色',
+    value: 'shadowColor',
+    text: 'shadowColor',
+    key: 'shadowColor',
+    defaultValue: 0
   }
 ];
 
@@ -376,6 +416,46 @@ export const FRAME_ATTRIBUTE = [
     text: 'fontWeight',
     key: 'fontWeight',
     defaultValue: 'normal'
+  },
+  {
+    content: '阴影',
+    label: '阴影',
+    value: 'shadow',
+    text: 'shadow',
+    key: 'shadow',
+    defaultValue: false
+  },
+  {
+    content: '阴影X偏移',
+    label: '阴影X偏移',
+    value: 'shadowOffsetX',
+    text: 'shadowOffsetX',
+    key: 'shadowOffsetX',
+    defaultValue: 0
+  },
+  {
+    content: '阴影Y偏移',
+    label: '阴影Y偏移',
+    value: 'shadowOffsetY',
+    text: 'shadowOffsetY',
+    key: 'shadowOffsetY',
+    defaultValue: 0
+  },
+  {
+    content: '阴影模糊',
+    label: '阴影模糊',
+    value: 'shadowBlur',
+    text: 'shadowBlur',
+    key: 'shadowBlur',
+    defaultValue: 0
+  },
+  {
+    content: '阴影颜色',
+    label: '阴影颜色',
+    value: 'shadowColor',
+    text: 'shadowColor',
+    key: 'shadowColor',
+    defaultValue: 0
   }
 ];
 
@@ -723,6 +803,11 @@ export const CONDITION_TYPE_ENUM = {
  * @property {string} TEXT_BACKGROUND - 文本背景颜色属性
  * @property {string} FONT_STYLE - 字体样式属性
  * @property {string} FONT_WEIGHT - 字体粗细属性
+ * @property {string} SHADOW - 阴影属性
+ * @property {string} SHADOW_OFFSET_X - 阴影x位移属性
+ * @property {string} SHADOW_OFFSET_Y - 阴影y位移属性
+ * @property {string} SHADOW_BLUR - 阴影模糊属性
+ * @property {string} SHADOW_COLOR - 阴影颜色属性
  */
 export const ATTRIBUTE_ENUM = {
   VISIBLE: 'visible',
@@ -745,7 +830,12 @@ export const ATTRIBUTE_ENUM = {
   TEXT_COLOR: 'textColor',
   TEXT_BACKGROUND: 'textBackground',
   FONT_STYLE: 'fontStyle',
-  FONT_WEIGHT: 'fontWeight'
+  FONT_WEIGHT: 'fontWeight',
+  SHADOW: 'shadow',
+  SHADOW_OFFSET_X: 'shadowOffsetX',
+  SHADOW_OFFSET_Y: 'shadowOffsetY',
+  SHADOW_BLUR: 'shadowBlur',
+  SHADOW_COLOR: 'shadowColor'
 };
 
 /**

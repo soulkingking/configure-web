@@ -244,6 +244,7 @@
               <t-form-item label-width="0">
                 <t-upload
                   theme="image"
+                  v-bind="uploadConfig"
                   accept="image/*"
                   v-model="images"
                   class="w-full"
@@ -375,6 +376,11 @@
       </t-tab-panel>
       <t-tab-panel label="数据" value="data">
         <div class="p0 node-props-container overflow-auto narrow-scrollbar"></div>
+        <div class="p0">
+          <div class="animation-btn">
+            <t-button block @click="handleAddData">添加数据</t-button>
+          </div>
+        </div>
       </t-tab-panel>
       <t-tab-panel label="状态" value="event">
         <div class="p0 node-props-container overflow-auto narrow-scrollbar"></div>
@@ -477,8 +483,9 @@
                       <t-tree-select
                         :data="structures"
                         v-model="condition.target"
-                        :keys="{ label: 'name', value: 'id', children: 'children' }"
-                      ></t-tree-select>
+                        :keys="{ label: 'name', value: 'id', children: 'childrenPens' }"
+                      >
+                      </t-tree-select>
                     </t-form-item>
                     <t-form-item label="值">
                       <t-auto-complete
@@ -540,10 +547,11 @@
                         <t-tree-select
                           :data="structures"
                           v-model="action.value"
-                          :keys="{ label: 'name', value: 'id', children: 'children' }"
+                          :keys="{ label: 'name', value: 'id', children: 'childrenPens' }"
                           clearable
                           @change="handleActionValueChange"
-                        ></t-tree-select>
+                        >
+                        </t-tree-select>
                       </t-form-item>
                       <t-form-item label="动画名称">
                         <t-auto-complete
@@ -569,10 +577,11 @@
                         <t-tree-select
                           :data="structures"
                           v-model="action.value"
-                          :keys="{ label: 'name', value: 'id', children: 'children' }"
+                          :keys="{ label: 'name', value: 'id', children: 'childrenPens' }"
                           clearable
                           @change="handleActionValueChange"
-                        ></t-tree-select>
+                        >
+                        </t-tree-select>
                       </t-form-item>
                       <t-form-item label="动画名称">
                         <t-auto-complete
@@ -598,10 +607,11 @@
                         <t-tree-select
                           :data="structures"
                           v-model="action.value"
-                          :keys="{ label: 'name', value: 'id', children: 'children' }"
+                          :keys="{ label: 'name', value: 'id', children: 'childrenPens' }"
                           clearable
                           @change="handleActionValueChange"
-                        ></t-tree-select>
+                        >
+                        </t-tree-select>
                       </t-form-item>
                       <t-form-item label="动画名称">
                         <t-auto-complete
@@ -627,10 +637,11 @@
                         <t-tree-select
                           :data="structures"
                           v-model="action.params"
-                          :keys="{ label: 'name', value: 'id', children: 'children' }"
+                          :keys="{ label: 'name', value: 'id', children: 'childrenPens' }"
                           clearable
                           @change="handleActionValueChange"
-                        ></t-tree-select>
+                        >
+                        </t-tree-select>
                       </t-form-item>
                       <t-form-item label="属性数据">
                         <div class="w-full">
@@ -1090,7 +1101,7 @@
 </template>
 
 <script setup lang="jsx">
-import { ref, inject, watchEffect, computed, watch, onMounted, onUnmounted } from 'vue';
+import { ref, inject, computed, watch, onMounted, onUnmounted } from 'vue';
 import {
   AddIcon,
   ArrowRightIcon,
@@ -1127,16 +1138,22 @@ import {
   TARGET_TYPE_ENUM,
   DASH_TYPE_ENUM
 } from '@/common/configure-common';
-import { handleTree } from '@/util';
 import { useSelection } from '@/hooks/useSelection';
-const meta2d = inject('meta2d');
+import { PI_META_2D, PI_STRUCTURES } from '@/common/index';
+import API from '@/api/API';
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/stores/user';
+const meta2d = inject(PI_META_2D);
+const structures = inject(PI_STRUCTURES);
+const userStore = useUserStore();
+const { token } = storeToRefs(userStore);
 const { selections } = useSelection();
 // 选中的图形
 const material = ref(null);
 // 位置数据
 const rect = ref();
 // 结构
-const structures = ref([]);
+// const structures = ref([]);
 // 动画
 const animationsSelected = ref([]);
 // 帧动画编辑界面
@@ -1145,6 +1162,15 @@ const animationVisible = ref(false);
 const animationSelected = ref(null);
 // 图片
 const images = ref([]);
+
+// 上传配置
+const uploadConfig = computed(() => {
+  return {
+    action: API.uploadFile,
+    headers: { Authorization: token.value },
+    max: 1
+  };
+});
 
 // 帧属性
 const frameAttributes = computed(() => {
@@ -1155,10 +1181,6 @@ const frameAttributes = computed(() => {
 const hasAttribute = (attribute = {}, key) => {
   return key in attribute;
 };
-// 更新结构
-watchEffect(() => {
-  structures.value = handleTree(deepClone(meta2d.value.store.data.pens));
-});
 
 // 获取图元
 const getPen = () => {
@@ -1460,6 +1482,9 @@ const handleAddFrameAttribute = (frame, item) => {
 const handleDeleteFrameAttribute = (frame, key) => {
   delete frame[key];
 };
+
+// 添加数据;
+const handleAddData = () => {};
 </script>
 <style scoped>
 .node-props-container {

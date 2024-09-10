@@ -20,7 +20,7 @@
                 @dragstart="onDragstart($event, shape.data)"
               >
                 <div class="w-full h-8 text-center">
-                  <t-icon :name="shape.icon" size="32px" v-if="shape.icon"></t-icon>
+                  <IconFont :name="shape.icon" size="32px" v-if="shape.icon"></IconFont>
                   <img v-else-if="shape.image" :src="shape.image" class="w-8 h-8" />
                   <div v-else-if="shape.svg" v-html="shape.svg" class="w-8 h-8"></div>
                 </div>
@@ -77,11 +77,19 @@
 import { ref, inject, watchEffect, onMounted } from 'vue';
 import { deepClone } from '@meta2d/core';
 import { useSelection } from '@/hooks/useSelection';
-import { ControlPlatformIcon, DeleteIcon, BrowseIcon, BrowseOffIcon } from 'tdesign-icons-vue-next';
+import {
+  ControlPlatformIcon,
+  DeleteIcon,
+  BrowseIcon,
+  BrowseOffIcon,
+  IconFont
+} from 'tdesign-icons-vue-next';
 import { MessagePlugin } from 'tdesign-vue-next';
 import { useIcons } from './useIcons';
-const meta2d = inject('meta2d');
-const structures = inject('structures');
+import { PI_META_2D, PI_STRUCTURES } from '@/common/index';
+
+const meta2d = inject(PI_META_2D);
+const structures = inject(PI_STRUCTURES);
 
 const active = ref('basic');
 // 选中的图形

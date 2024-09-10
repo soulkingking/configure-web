@@ -96,3 +96,48 @@ export function getBaseUrl() {
     ? window.location.origin + import.meta.env.VITE_APP_BASE_API
     : import.meta.env.VITE_APP_BASE_API;
 }
+
+/**
+ * 去除空字符串，null,undefined
+ * @param {*} obj
+ * @returns
+ */
+export function removeEmptyField(obj) {
+  let newObj = {};
+  if (typeof obj == 'string') {
+    obj = JSON.parse(obj);
+  }
+  if (obj instanceof Array) {
+    newObj = [];
+  }
+  if (obj instanceof Object) {
+    for (let attr in obj) {
+      if (
+        obj.hasOwnProperty(attr) &&
+        obj[attr] !== '' &&
+        obj[attr] !== null &&
+        obj[attr] !== undefined
+      ) {
+        if (obj[attr] instanceof Object) {
+          newObj[attr] = removeEmptyField(obj[attr]);
+        } else if (
+          typeof obj[attr] == 'string' &&
+          ((obj[attr].indexOf('{') > -1 && obj[attr].indexOf('}') > -1) ||
+            (obj[attr].indexOf('[') > -1 && obj[attr].indexOf(']') > -1))
+        ) {
+          try {
+            let attrObj = JSON.parse(obj[attr]);
+            if (attrObj instanceof Object) {
+              newObj[attr] = removeEmptyField(attrObj);
+            }
+          } catch (e) {
+            newObj[attr] = obj[attr];
+          }
+        } else {
+          newObj[attr] = obj[attr];
+        }
+      }
+    }
+  }
+  return newObj;
+}

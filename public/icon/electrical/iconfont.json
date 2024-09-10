@@ -1,0 +1,709 @@
+{
+  "id": "4649079",
+  "name": "电气符号",
+  "font_family": "t",
+  "css_prefix_text": "t-icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "37176348",
+      "name": "待机",
+      "font_class": "daiji",
+      "unicode": "e6e8",
+      "unicode_decimal": 59112
+    },
+    {
+      "icon_id": "37176349",
+      "name": "保护接地",
+      "font_class": "baohujiedi",
+      "unicode": "e6e9",
+      "unicode_decimal": 59113
+    },
+    {
+      "icon_id": "37176350",
+      "name": "等电位",
+      "font_class": "dengdianwei",
+      "unicode": "e6ea",
+      "unicode_decimal": 59114
+    },
+    {
+      "icon_id": "37176351",
+      "name": "单向运动",
+      "font_class": "danxiangyundong",
+      "unicode": "e6eb",
+      "unicode_decimal": 59115
+    },
+    {
+      "icon_id": "37176352",
+      "name": "调谐",
+      "font_class": "tiaoxie",
+      "unicode": "e6ec",
+      "unicode_decimal": 59116
+    },
+    {
+      "icon_id": "37176353",
+      "name": "无线电接收机",
+      "font_class": "a-tiaoxieqiwuxiandianjieshouji",
+      "unicode": "e6ed",
+      "unicode_decimal": 59117
+    },
+    {
+      "icon_id": "37176354",
+      "name": "断电源",
+      "font_class": "duandianyuan",
+      "unicode": "e6ee",
+      "unicode_decimal": 59118
+    },
+    {
+      "icon_id": "37176355",
+      "name": "电池",
+      "font_class": "a-dianchiyibanfuhao-1",
+      "unicode": "e6ef",
+      "unicode_decimal": 59119
+    },
+    {
+      "icon_id": "37176357",
+      "name": "移离或移向",
+      "font_class": "feitongshiyilihuoyixiangcankaodiandexiaoyinghuozuoyong",
+      "unicode": "e6f0",
+      "unicode_decimal": 59120
+    },
+    {
+      "icon_id": "37176358",
+      "name": "负号、负极",
+      "font_class": "a-fuhaofuji",
+      "unicode": "e6f1",
+      "unicode_decimal": 59121
+    },
+    {
+      "icon_id": "37176359",
+      "name": "可变性",
+      "font_class": "kebianxing",
+      "unicode": "e6f2",
+      "unicode_decimal": 59122
+    },
+    {
+      "icon_id": "37176360",
+      "name": "输入",
+      "font_class": "shuru",
+      "unicode": "e6f3",
+      "unicode_decimal": 59123
+    },
+    {
+      "icon_id": "37176361",
+      "name": "熔断器",
+      "font_class": "rongduanqi",
+      "unicode": "e6f4",
+      "unicode_decimal": 59124
+    },
+    {
+      "icon_id": "37176362",
+      "name": "正号、正极",
+      "font_class": "a-zhenghaozhengji",
+      "unicode": "e6f5",
+      "unicode_decimal": 59125
+    },
+    {
+      "icon_id": "37176363",
+      "name": "接地",
+      "font_class": "jiedi",
+      "unicode": "e6f6",
+      "unicode_decimal": 59126
+    },
+    {
+      "icon_id": "37176364",
+      "name": "天线",
+      "font_class": "tianxian",
+      "unicode": "e6f7",
+      "unicode_decimal": 59127
+    },
+    {
+      "icon_id": "37176365",
+      "name": "接机壳",
+      "font_class": "a-jiejikejiejijia",
+      "unicode": "e6f8",
+      "unicode_decimal": 59128
+    },
+    {
+      "icon_id": "37176366",
+      "name": "交流电",
+      "font_class": "jiaoliudian",
+      "unicode": "e6f9",
+      "unicode_decimal": 59129
+    },
+    {
+      "icon_id": "37176367",
+      "name": "灯、照明",
+      "font_class": "a-dengzhaoming",
+      "unicode": "e6fa",
+      "unicode_decimal": 59130
+    },
+    {
+      "icon_id": "37176368",
+      "name": "通、断",
+      "font_class": "a-tongduananyian",
+      "unicode": "e6fb",
+      "unicode_decimal": 59131
+    },
+    {
+      "icon_id": "37176369",
+      "name": "输出",
+      "font_class": "shuchu",
+      "unicode": "e6fc",
+      "unicode_decimal": 59132
+    },
+    {
+      "icon_id": "37176370",
+      "name": "电池定位",
+      "font_class": "dianchidingwei",
+      "unicode": "e6fd",
+      "unicode_decimal": 59133
+    },
+    {
+      "icon_id": "37176371",
+      "name": "喇叭",
+      "font_class": "laba",
+      "unicode": "e6fe",
+      "unicode_decimal": 59134
+    },
+    {
+      "icon_id": "37176372",
+      "name": "交直流变换器",
+      "font_class": "a-jiaoliuzhiliubianhuanqi",
+      "unicode": "e6ff",
+      "unicode_decimal": 59135
+    },
+    {
+      "icon_id": "37176373",
+      "name": "信号强度衰减",
+      "font_class": "xinhaoqiangdushuaijian",
+      "unicode": "e700",
+      "unicode_decimal": 59136
+    },
+    {
+      "icon_id": "37176374",
+      "name": "环形天线",
+      "font_class": "huanxingtianxian",
+      "unicode": "e701",
+      "unicode_decimal": 59137
+    },
+    {
+      "icon_id": "37176375",
+      "name": "功能性接地",
+      "font_class": "gongnengxingjiedi",
+      "unicode": "e702",
+      "unicode_decimal": 59138
+    },
+    {
+      "icon_id": "37176376",
+      "name": "铃",
+      "font_class": "ling",
+      "unicode": "e703",
+      "unicode_decimal": 59139
+    },
+    {
+      "icon_id": "37176377",
+      "name": "移离参考点",
+      "font_class": "yilicankaodiandeshuangxiangxiaoyinghuozuoyong",
+      "unicode": "e704",
+      "unicode_decimal": 59140
+    },
+    {
+      "icon_id": "37176378",
+      "name": "移离参考点",
+      "font_class": "yilicankaodiandexiaoyinghuozuoyong",
+      "unicode": "e705",
+      "unicode_decimal": 59141
+    },
+    {
+      "icon_id": "37176379",
+      "name": "移向参考点",
+      "font_class": "yixiangcankaodiandexiaoyinghuozuoyong",
+      "unicode": "e706",
+      "unicode_decimal": 59142
+    },
+    {
+      "icon_id": "37176382",
+      "name": "通电源",
+      "font_class": "tongdianyuan",
+      "unicode": "e707",
+      "unicode_decimal": 59143
+    },
+    {
+      "icon_id": "37176383",
+      "name": "直流电",
+      "font_class": "zhiliudian",
+      "unicode": "e708",
+      "unicode_decimal": 59144
+    },
+    {
+      "icon_id": "37176384",
+      "name": "移向参考点",
+      "font_class": "yixiangcankaodiandeshuangxiangxiaoyinghuozuoyong",
+      "unicode": "e709",
+      "unicode_decimal": 59145
+    },
+    {
+      "icon_id": "37176385",
+      "name": "通、断",
+      "font_class": "a-tongduananniukaiguan",
+      "unicode": "e70a",
+      "unicode_decimal": 59146
+    },
+    {
+      "icon_id": "37176386",
+      "name": "双向运动",
+      "font_class": "shuangxiangyundong",
+      "unicode": "e70b",
+      "unicode_decimal": 59147
+    },
+    {
+      "icon_id": "37176387",
+      "name": "噪声抑制",
+      "font_class": "zaoshengyizhi",
+      "unicode": "e70c",
+      "unicode_decimal": 59148
+    },
+    {
+      "icon_id": "37176388",
+      "name": "移离或移向",
+      "font_class": "tongshiyilihuoyixiangcankaodiandexiaoyinghuozuoyong",
+      "unicode": "e70d",
+      "unicode_decimal": 59149
+    },
+    {
+      "icon_id": "37176389",
+      "name": "交直流两用",
+      "font_class": "jiaozhiliuliangyong",
+      "unicode": "e70e",
+      "unicode_decimal": 59150
+    },
+    {
+      "icon_id": "37176390",
+      "name": "电池",
+      "font_class": "a-dianchiyibanfuhao",
+      "unicode": "e70f",
+      "unicode_decimal": 59151
+    },
+    {
+      "icon_id": "37176391",
+      "name": "三相交流电",
+      "font_class": "daizhongxingxiandesanxiangjiaoliudian",
+      "unicode": "e710",
+      "unicode_decimal": 59152
+    },
+    {
+      "icon_id": "37176392",
+      "name": "双向局限运动",
+      "font_class": "shuangxiangjuxianyundong",
+      "unicode": "e711",
+      "unicode_decimal": 59153
+    },
+    {
+      "icon_id": "37176393",
+      "name": "自动频率控制",
+      "font_class": "zidongpinshuaikongzhi",
+      "unicode": "e712",
+      "unicode_decimal": 59154
+    },
+    {
+      "icon_id": "37176394",
+      "name": "三相交流电",
+      "font_class": "sanxiangjiaoliudian",
+      "unicode": "e713",
+      "unicode_decimal": 59155
+    },
+    {
+      "icon_id": "37190717",
+      "name": "唱片拾音器",
+      "font_class": "changpianshiyinqi",
+      "unicode": "e714",
+      "unicode_decimal": 59156
+    },
+    {
+      "icon_id": "37190718",
+      "name": "单声道",
+      "font_class": "danshengdao",
+      "unicode": "e715",
+      "unicode_decimal": 59157
+    },
+    {
+      "icon_id": "37190719",
+      "name": "彩色电视",
+      "font_class": "caisedianshi",
+      "unicode": "e716",
+      "unicode_decimal": 59158
+    },
+    {
+      "icon_id": "37190720",
+      "name": "磁带消磁",
+      "font_class": "cidaixiaoci",
+      "unicode": "e717",
+      "unicode_decimal": 59159
+    },
+    {
+      "icon_id": "37190721",
+      "name": "唱片拾音器2",
+      "font_class": "changpianshiyinqi2",
+      "unicode": "e718",
+      "unicode_decimal": 59160
+    },
+    {
+      "icon_id": "37190722",
+      "name": "带式录音机",
+      "font_class": "daishiluyinji",
+      "unicode": "e719",
+      "unicode_decimal": 59161
+    },
+    {
+      "icon_id": "37190723",
+      "name": "低通滤波器",
+      "font_class": "ditonglvboqi",
+      "unicode": "e71a",
+      "unicode_decimal": 59162
+    },
+    {
+      "icon_id": "37190724",
+      "name": "垂直线性",
+      "font_class": "chuizhixianxing",
+      "unicode": "e71b",
+      "unicode_decimal": 59163
+    },
+    {
+      "icon_id": "37190725",
+      "name": "垂直图像幅度",
+      "font_class": "chuizhituxiangfudu",
+      "unicode": "e71c",
+      "unicode_decimal": 59164
+    },
+    {
+      "icon_id": "37190726",
+      "name": "传声器",
+      "font_class": "chuanshengqi",
+      "unicode": "e71d",
+      "unicode_decimal": 59165
+    },
+    {
+      "icon_id": "37190727",
+      "name": "磁带录制",
+      "font_class": "cidailuzhi",
+      "unicode": "e71e",
+      "unicode_decimal": 59166
+    },
+    {
+      "icon_id": "37190728",
+      "name": "磁带重放",
+      "font_class": "cidaizhongfang",
+      "unicode": "e71f",
+      "unicode_decimal": 59167
+    },
+    {
+      "icon_id": "37190729",
+      "name": "垂直图像位移",
+      "font_class": "chuizhituxiangweiyi",
+      "unicode": "e720",
+      "unicode_decimal": 59168
+    },
+    {
+      "icon_id": "37190730",
+      "name": "彩色",
+      "font_class": "caise",
+      "unicode": "e721",
+      "unicode_decimal": 59169
+    },
+    {
+      "icon_id": "37190731",
+      "name": "垂直同步",
+      "font_class": "chuizhitongbu",
+      "unicode": "e722",
+      "unicode_decimal": 59170
+    },
+    {
+      "icon_id": "37190732",
+      "name": "电磁式拾音器",
+      "font_class": "diancishishiyinqi",
+      "unicode": "e723",
+      "unicode_decimal": 59171
+    },
+    {
+      "icon_id": "37190733",
+      "name": "色调",
+      "font_class": "setiao",
+      "unicode": "e724",
+      "unicode_decimal": 59172
+    },
+    {
+      "icon_id": "37190734",
+      "name": "立体声传声器",
+      "font_class": "litishengchuanshengqi",
+      "unicode": "e725",
+      "unicode_decimal": 59173
+    },
+    {
+      "icon_id": "37190735",
+      "name": "电视监视器2",
+      "font_class": "dianshijianshiqi2",
+      "unicode": "e726",
+      "unicode_decimal": 59174
+    },
+    {
+      "icon_id": "37190736",
+      "name": "电视接收机",
+      "font_class": "dianshijieshouji",
+      "unicode": "e727",
+      "unicode_decimal": 59175
+    },
+    {
+      "icon_id": "37190737",
+      "name": "电视、视频",
+      "font_class": "a-dianshishipin",
+      "unicode": "e728",
+      "unicode_decimal": 59176
+    },
+    {
+      "icon_id": "37190738",
+      "name": "电视接收机2",
+      "font_class": "dianshijieshouji2",
+      "unicode": "e729",
+      "unicode_decimal": 59177
+    },
+    {
+      "icon_id": "37190739",
+      "name": "电话适配器",
+      "font_class": "dianhuashipeiqi",
+      "unicode": "e72a",
+      "unicode_decimal": 59178
+    },
+    {
+      "icon_id": "37190740",
+      "name": "高通滤波器",
+      "font_class": "gaotonglvboqi",
+      "unicode": "e72b",
+      "unicode_decimal": 59179
+    },
+    {
+      "icon_id": "37190741",
+      "name": "电视监视器",
+      "font_class": "dianshijianshiqi",
+      "unicode": "e72c",
+      "unicode_decimal": 59180
+    },
+    {
+      "icon_id": "37190742",
+      "name": "放大器",
+      "font_class": "fangdaqi",
+      "unicode": "e72d",
+      "unicode_decimal": 59181
+    },
+    {
+      "icon_id": "37190743",
+      "name": "双向传声器",
+      "font_class": "shuangxiangchuanshengqi",
+      "unicode": "e72e",
+      "unicode_decimal": 59182
+    },
+    {
+      "icon_id": "37190744",
+      "name": "压电拾音器",
+      "font_class": "yadianshiyinqi",
+      "unicode": "e72f",
+      "unicode_decimal": 59183
+    },
+    {
+      "icon_id": "37190745",
+      "name": "立体声",
+      "font_class": "litisheng",
+      "unicode": "e730",
+      "unicode_decimal": 59184
+    },
+    {
+      "icon_id": "37190746",
+      "name": "图像尺寸调整",
+      "font_class": "tuxiangchicuntiaozheng",
+      "unicode": "e731",
+      "unicode_decimal": 59185
+    },
+    {
+      "icon_id": "37190747",
+      "name": "对比度",
+      "font_class": "duibidu",
+      "unicode": "e732",
+      "unicode_decimal": 59186
+    },
+    {
+      "icon_id": "37190748",
+      "name": "音乐",
+      "font_class": "yinle",
+      "unicode": "e733",
+      "unicode_decimal": 59187
+    },
+    {
+      "icon_id": "37190750",
+      "name": "全向传声器",
+      "font_class": "quanxiangchuanshengqi",
+      "unicode": "e734",
+      "unicode_decimal": 59188
+    },
+    {
+      "icon_id": "37190751",
+      "name": "耳机",
+      "font_class": "erji",
+      "unicode": "e735",
+      "unicode_decimal": 59189
+    },
+    {
+      "icon_id": "37190752",
+      "name": "高音控制",
+      "font_class": "gaoyinkongzhi",
+      "unicode": "e736",
+      "unicode_decimal": 59190
+    },
+    {
+      "icon_id": "37190753",
+      "name": "头戴耳机",
+      "font_class": "toudaierji",
+      "unicode": "e737",
+      "unicode_decimal": 59191
+    },
+    {
+      "icon_id": "37190754",
+      "name": "轮廓加重器",
+      "font_class": "lunkuojiazhongqi",
+      "unicode": "e738",
+      "unicode_decimal": 59192
+    },
+    {
+      "icon_id": "37190755",
+      "name": "立体声录音机",
+      "font_class": "litishengluyinji",
+      "unicode": "e739",
+      "unicode_decimal": 59193
+    },
+    {
+      "icon_id": "37190756",
+      "name": "水平同步",
+      "font_class": "shuipingtongbu",
+      "unicode": "e73a",
+      "unicode_decimal": 59194
+    },
+    {
+      "icon_id": "37190757",
+      "name": "水平图像位移",
+      "font_class": "shuipingtuxiangweiyi",
+      "unicode": "e73b",
+      "unicode_decimal": 59195
+    },
+    {
+      "icon_id": "37190758",
+      "name": "水平图像幅度",
+      "font_class": "shuipingtuxiangfudu",
+      "unicode": "e73c",
+      "unicode_decimal": 59196
+    },
+    {
+      "icon_id": "37190759",
+      "name": "聚焦",
+      "font_class": "jujiao",
+      "unicode": "e73d",
+      "unicode_decimal": 59197
+    },
+    {
+      "icon_id": "37190760",
+      "name": "心形传声器",
+      "font_class": "xinxingchuanshengqi",
+      "unicode": "e73e",
+      "unicode_decimal": 59198
+    },
+    {
+      "icon_id": "37190761",
+      "name": "危险电压",
+      "font_class": "weixiandianya",
+      "unicode": "e73f",
+      "unicode_decimal": 59199
+    },
+    {
+      "icon_id": "37190762",
+      "name": "头戴式说话器",
+      "font_class": "toudaishishuohuaqi",
+      "unicode": "e740",
+      "unicode_decimal": 59200
+    },
+    {
+      "icon_id": "37190763",
+      "name": "水平线性",
+      "font_class": "shuipingxianxing",
+      "unicode": "e741",
+      "unicode_decimal": 59201
+    },
+    {
+      "icon_id": "37190764",
+      "name": "扬声器",
+      "font_class": "yangshengqi",
+      "unicode": "e742",
+      "unicode_decimal": 59202
+    },
+    {
+      "icon_id": "37190766",
+      "name": "色饱和度",
+      "font_class": "sebaohedu",
+      "unicode": "e743",
+      "unicode_decimal": 59203
+    },
+    {
+      "icon_id": "37190767",
+      "name": "亮度、灰度",
+      "font_class": "a-liangduhuidu",
+      "unicode": "e744",
+      "unicode_decimal": 59204
+    },
+    {
+      "icon_id": "37190768",
+      "name": "平衡",
+      "font_class": "pingheng",
+      "unicode": "e745",
+      "unicode_decimal": 59205
+    },
+    {
+      "icon_id": "37190769",
+      "name": "头戴立体耳机",
+      "font_class": "toudailitierji",
+      "unicode": "e746",
+      "unicode_decimal": 59206
+    },
+    {
+      "icon_id": "37190864",
+      "name": "低音控制",
+      "font_class": "diyinkongzhi",
+      "unicode": "e747",
+      "unicode_decimal": 59207
+    },
+    {
+      "icon_id": "37191626",
+      "name": "动作的开始",
+      "font_class": "dongzuodekaishi",
+      "unicode": "e748",
+      "unicode_decimal": 59208
+    },
+    {
+      "icon_id": "37192154",
+      "name": "照明辅助设备",
+      "font_class": "zhaomingfuzhushebei",
+      "unicode": "e749",
+      "unicode_decimal": 59209
+    },
+    {
+      "icon_id": "37192155",
+      "name": "重放视频",
+      "font_class": "zhongfangshipin",
+      "unicode": "e74a",
+      "unicode_decimal": 59210
+    },
+    {
+      "icon_id": "37192242",
+      "name": "录像",
+      "font_class": "luxiang",
+      "unicode": "e74b",
+      "unicode_decimal": 59211
+    }
+  ]
+}

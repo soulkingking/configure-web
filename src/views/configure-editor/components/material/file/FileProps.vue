@@ -3,7 +3,9 @@ import { ref, inject, onMounted, computed } from 'vue';
 import API from '@/api/API';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
-const meta2d = inject('meta2d');
+import { PI_META_2D, PI_STRUCTURES } from '@/common/index';
+
+const meta2d = inject(PI_META_2D);
 const userStore = useUserStore();
 const { token } = storeToRefs(userStore);
 

@@ -1,19 +1,66 @@
 import { ref } from 'vue';
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
+import { getUser, getBaseUserConfig } from '@/api/system/user/user';
+import { useAppStore } from './app';
 
 // 编辑器数据存储
 export const useUserStore = defineStore(
   'user',
   () => {
-    // 图纸数据
-    const token = ref(
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOiJ1c2VyOjE2MzY5NjIyMzI4MjM6MTQxNjk1NTQ5ODQ3Nzg4NzQ4OSIsInJuU3RyIjoiaTVjNFJYQ2FNOFV2YmxrWHhxWEpDcEdBaWtlUllCdE4ifQ.HaywsFKB352TsFW2DqfWHLJu0IU6CONSd9k6RuaGT2E'
-    );
+    const appStore = useAppStore();
 
-    const setToken = (token) => {
-      token.value = token;
+    const token = ref();
+
+    const refreshToken = ref();
+
+    const user = ref();
+
+    const userConfig = ref();
+
+    const setToken = (value) => {
+      token.value = value;
     };
-    return { token, setToken };
+    const setRefreshToken = (value) => {
+      refreshToken.value = value;
+    };
+
+    const setUser = (value) => {
+      user.value = value;
+    };
+
+    const setUserConfig = (value) => {
+      userConfig.value = value;
+    };
+
+    // 获取用户信息
+    const getUserDetail = async () => {
+      const [err, res] = await getUser(user.value);
+      if (!err && res.result) {
+        setUser(res.result);
+      }
+    };
+
+    // 获取用户配置
+    const getUserConfig = async () => {
+      const { appId } = storeToRefs(appStore);
+      const [err, res] = await getBaseUserConfig(user.value.userId, appId.value);
+      if (!err && res.result) {
+        setUserConfig(JSON.parse(res.result.configContent));
+      }
+    };
+
+    return {
+      token,
+      refreshToken,
+      user,
+      userConfig,
+      setToken,
+      setUser,
+      setRefreshToken,
+      setUserConfig,
+      getUserDetail,
+      getUserConfig
+    };
   },
   { persist: true }
 );

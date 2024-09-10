@@ -122,7 +122,8 @@ import { ref, inject, watchEffect } from 'vue';
 import { IconFont } from 'tdesign-icons-vue-next';
 import { DASH_TYPE, ALGIN_TYPE, DASH_TYPE_ENUM } from '@/common/configure-common';
 import { useSelection } from '@/hooks/useSelection';
-const meta2d = inject('meta2d');
+import { PI_META_2D, PI_STRUCTURES } from '@/common/index';
+const meta2d = inject(PI_META_2D);
 const { selections } = useSelection();
 // 选中的图形
 const material = ref({});

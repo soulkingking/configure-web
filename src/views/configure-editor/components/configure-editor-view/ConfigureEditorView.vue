@@ -21,7 +21,8 @@ import { MessagePlugin } from 'tdesign-vue-next';
 import { DeleteIcon, AlignTopIcon, CombinationIcon } from 'tdesign-icons-vue-next';
 import { useSelection } from '@/hooks/useSelection';
 import { SELECTION_MODE_ENUM } from '@/common/configure-common';
-const meta2d = inject('meta2d');
+import { PI_META_2D } from '@/common/index';
+const meta2d = inject(PI_META_2D);
 const meta2dTarget = ref();
 const meta2dOptions = ref({
   rule: true
@@ -91,7 +92,7 @@ const getMenuData = () => {
       {
         label: '取消组合',
         icon: <CombinationIcon />,
-        disabled: !(
+        hidden: !(
           selections.mode === SELECTION_MODE_ENUM.PEN &&
           selections.pen.children &&
           selections.pen.children.length > 0

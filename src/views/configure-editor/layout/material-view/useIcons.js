@@ -100,6 +100,7 @@ export function useIcons() {
   const addIcons = async (url) => {
     // 请求路径
     let data = await fetch('/icon/' + url + '/iconfont.json').then((rsp) => rsp.json());
+
     let iconGroup = {
       name: data.name,
       loaded: true,
@@ -110,8 +111,10 @@ export function useIcons() {
       iconGroup.list.push({
         // 侧边栏信息
         name: item.name,
+        label: item.name,
+        key: item.icon_id,
         // 侧边栏目显示
-        icon: data.css_prefix_text + item.font_class,
+        icon: item.font_class,
         data: {
           // 配置图元信息
           width: 100,
@@ -133,6 +136,7 @@ export function useIcons() {
   const getUnicodeIcons = async () => {
     let icons = [];
     const iconsUrl = await userPensUrl.icon(); // 获取字体图标的路径
+
     icons = await Promise.all(iconsUrl.map((url) => addIcons(url.name))); // 添加字体图标
     return icons; // 返回结果
   };

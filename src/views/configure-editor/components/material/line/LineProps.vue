@@ -342,7 +342,9 @@ import {
 } from '@/common/configure-common';
 import { useSelection } from '@/hooks/useSelection';
 import { handleTree } from '@/util';
-const meta2d = inject('meta2d');
+import { PI_META_2D, PI_STRUCTURES } from '@/common/index';
+
+const meta2d = inject(PI_META_2D);
 const { selections } = useSelection();
 // 选中的图形
 const material = ref(null);

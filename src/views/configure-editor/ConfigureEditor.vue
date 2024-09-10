@@ -156,16 +156,24 @@ import { LockState, s8 } from '@meta2d/core';
 import { storeToRefs } from 'pinia';
 import { useTheme } from '@/hooks/useTheme';
 import { handleTree } from '@/util';
+import { useUserStore } from '@/stores/user';
+import { PI_META_2D, PI_STRUCTURES } from '@/common/index';
+
 // 编辑器实例
 const meta2d = ref();
 // 结构
 const structures = ref([]);
-provide('meta2d', meta2d);
-provide('structures', structures);
+provide(PI_META_2D, meta2d);
+provide(PI_STRUCTURES, structures);
 
 const configureEditorStore = useConfigureEditorStore();
+const userStore = useUserStore();
 const { setDataSheets } = configureEditorStore;
+const { getUserDetail, getUserConfig } = userStore;
+
 const { dataSheets } = storeToRefs(configureEditorStore);
+const { user } = storeToRefs(userStore);
+
 const { isDark, toggleDark } = useTheme();
 
 const lineName = ref(LINE_NAME_ENUM.CURVE);
@@ -240,37 +248,6 @@ const { start: handleAutoSave } = useTimeoutFn(() => {
   }
 }, Config.settingConfig.timeoutTime);
 
-onMounted(() => {
-  nextTick(() => {
-    handleUpdateStructure();
-    meta2d.value.on('scale', handleAutoSave);
-    meta2d.value.on('add', () => {
-      handleAutoSave();
-      handleUpdateStructure();
-    });
-    meta2d.value.on('opened', () => {
-      handleAutoSave();
-      handleUpdateStructure();
-    });
-    meta2d.value.on('undo', () => {
-      handleAutoSave();
-      handleUpdateStructure();
-    });
-    meta2d.value.on('redo', () => {
-      handleAutoSave();
-      handleUpdateStructure();
-    });
-    meta2d.value.on('delete', () => {
-      handleAutoSave();
-      handleUpdateStructure();
-    });
-    meta2d.value.on('rotatePens', handleAutoSave);
-    meta2d.value.on('translatePens', handleAutoSave);
-    meta2d.value.on('autoSave', handleAutoSave);
-    meta2d.value.on('updateStructure', handleUpdateStructure);
-  });
-});
-
 // 钢笔
 const handleDrawLine = () => {
   if (meta2d.value.canvas.drawingLineName) {
@@ -302,6 +279,40 @@ const handleLocked = () => {
   }
   setDataSheets(meta2d.value.data());
 };
+
+onMounted(() => {
+  nextTick(() => {
+    handleUpdateStructure();
+    meta2d.value.on('scale', handleAutoSave);
+    meta2d.value.on('add', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
+    meta2d.value.on('opened', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
+    meta2d.value.on('undo', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
+    meta2d.value.on('redo', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
+    meta2d.value.on('delete', () => {
+      handleAutoSave();
+      handleUpdateStructure();
+    });
+    meta2d.value.on('rotatePens', handleAutoSave);
+    meta2d.value.on('translatePens', handleAutoSave);
+    meta2d.value.on('autoSave', handleAutoSave);
+    meta2d.value.on('updateStructure', handleUpdateStructure);
+  });
+});
+
+getUserDetail();
+getUserConfig();
 </script>
 
 <style scoped>
